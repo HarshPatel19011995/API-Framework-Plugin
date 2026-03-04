@@ -4,7 +4,7 @@
 <hr>
 <h2>📑 Table of Contents</h2>
 
-<b>📌 Overview <\n>
+<b>📌 Overview </n>
 <b>⚡ Quick Start </b>
 <b>✨ Key Features <b>
 <b>🧠 Architecture <b>

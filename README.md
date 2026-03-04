@@ -1,23 +1,43 @@
-<h2>🚀 MayaMystic API Framework </h2>
+🚀 MayaMystic API Framework
 <p align="center"> <img src="https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/.github/banner.png" width="850"/> </p> <p align="center"> <b>Enterprise-grade middleware-based API networking framework for Unity</b> </p> <p align="center">
-</p>
-<hr>
-<h2>📑 Table of Contents</h2>
 
-- **📌 [Overview](#-overview)**
-- **⚡ [Quick Start](#-quick-start)**
-- **✨ [Key Features](#-key-features)**
-- **🧠 [Architecture](#-architecture)**
-- **🔄 [API Lifecycle](#-api-request-lifecycle)**
-- **⚙ [Core Components](#-core-components)**
-- **📦 [Package Information](#-package-information)**
-- **📁 [Package Structure](#-package-structure)**
-- **📚 [Documentation](#-documentation)**
-- **🧪 [Samples](#-samples)**
-- **🗺 [Roadmap](#-roadmap)**
-- **📜 [Changelog](#-changelog)**
-- **📄 [License](#-license)**
-- **👤 [Author](#-author)**
+
+
+
+
+
+
+
+</p>
+📑 Table of Contents
+
+📌 Overview
+
+⚡ Quick Start
+
+✨ Key Features
+
+🧠 Architecture
+
+🔄 API Request Lifecycle
+
+⚙ Core Components
+
+📦 Package Information
+
+📁 Package Structure
+
+📚 Documentation
+
+🧪 Samples
+
+🗺 Roadmap
+
+📜 Changelog
+
+📄 License
+
+👤 Author
 
 📌 Overview
 
@@ -25,7 +45,7 @@ MayaMystic API Framework is a production-ready networking SDK for Unity.
 
 It introduces a middleware pipeline architecture allowing developers to build scalable API systems with clean architecture.
 
-Built-in solutions include:
+Built-in solutions include
 
 Authentication
 
@@ -90,7 +110,7 @@ Clean separation of concerns
 
 Extensible networking architecture
 
-Middleware driven request lifecycle
+Middleware-driven request lifecycle
 
 Production-ready scalability
 

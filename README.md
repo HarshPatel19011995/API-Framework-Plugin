@@ -412,12 +412,13 @@ Demonstrates
 
 <h2 id="changelog">📜 Changelog</h2>
 
-https://github.com/HarshPatel19011995/API-Framework-Plugin/blob/main/CHANGELOG.md
+[https://github.com/HarshPatel19011995/API-Framework-Plugin/blob/main/CHANGELOG.md]
 
 <hr>
 
 <h2 id="license">📄 License</h2>
 
+[https://github.com/HarshPatel19011995/API-Framework-Plugin/blob/main/LICENSE.md]
 Proprietary – MayaMystic  
 All rights reserved.
 

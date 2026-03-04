@@ -4,33 +4,21 @@
 <hr>
 <h2>📑 Table of Contents</h2>
 
-📌 Overview
-
-⚡ Quick Start
-
-✨ Key Features
-
-🧠 Architecture
-
-🔄 API Lifecycle
-
-⚙ Core Components
-
-📦 Package Information
-
+<b>📌 Overview </b>
+<b>⚡ Quick Start </b>
+<b>✨ Key Features <b>
+<b>🧠 Architecture <b>
+<b>🔄 API Lifecycle <b>
+<b>⚙ Core Components </b>
+<b>📦 Package Information
 📁 Package Structure
-
 📚 Documentation
-
 🧪 Samples
-
 🗺 Roadmap
-
 📜 Changelog
-
 📄 License
-
 👤 Author
+
 
 📌 Overview
 

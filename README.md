@@ -4,22 +4,20 @@
 <hr>
 <h2>📑 Table of Contents</h2>
 
-<b>📌 Overview </n>
-
-<b>⚡ Quick Start </b>
-<b>✨ Key Features <b>
-<b>🧠 Architecture <b>
-<b>🔄 API Lifecycle <b>
-<b>⚙ Core Components </b>
-<b>📦 Package Information
-📁 Package Structure
-📚 Documentation
-🧪 Samples
-🗺 Roadmap
-📜 Changelog
-📄 License
-👤 Author
-
+- **📌 [Overview](#-overview)**
+- **⚡ [Quick Start](#-quick-start)**
+- **✨ [Key Features](#-key-features)**
+- **🧠 [Architecture](#-architecture)**
+- **🔄 [API Lifecycle](#-api-request-lifecycle)**
+- **⚙ [Core Components](#-core-components)**
+- **📦 [Package Information](#-package-information)**
+- **📁 [Package Structure](#-package-structure)**
+- **📚 [Documentation](#-documentation)**
+- **🧪 [Samples](#-samples)**
+- **🗺 [Roadmap](#-roadmap)**
+- **📜 [Changelog](#-changelog)**
+- **📄 [License](#-license)**
+- **👤 [Author](#-author)**
 
 📌 Overview
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MayaMystic API Documentation</title>
+    <link rel="stylesheet" href="styling.css">
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>MayaMystic API</h2>
+
+    <input type="text" id="searchInput" class="search-box" placeholder="Search...">
+
+    <div class="menu-section">Overview</div>
+    <a href="#" data-page="overview">Introduction</a>
+    <a href="#" data-page="getting-started">Getting Started</a>
+    <a href="#" data-page="installation">Installation</a>
+
+    <div class="menu-section">Core</div>
+    <a href="#" data-page="architecture">Architecture</a>
+    <a href="#" data-page="api-manager">ApiManager</a>
+    <a href="#" data-page="middleware">Middleware</a>
+    <a href="#" data-page="token-system">Token System</a>
+    <a href="#" data-page="endpoint">Endpoint Resolver</a>
+
+    <div class="menu-section">Advanced</div>
+    <a href="#" data-page="smart-retry">Smart Retry</a>
+    <a href="#" data-page="authentication">Authentication</a>
+    <a href="#" data-page="extending">Extending Middleware</a>
+
+    <div class="menu-section">Reference</div>
+    <a href="#" data-page="api-reference">API Reference</a>
+
+    <div class="sidebar-footer">
+        <button onclick="toggleTheme()">🌙 Toggle Theme</button>
+    </div>
+</div>
+
+<div class="content" id="content-area">
+    <!-- Dynamic content loads here -->
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

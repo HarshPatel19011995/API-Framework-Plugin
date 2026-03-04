@@ -1,0 +1,37 @@
+{
+  "name": "com.mayamystic.apiframework",
+  "version": "1.0.0",
+  "displayName": "MayaMystic API Framework",
+  "description": "Reusable, enterprise-grade API networking framework for Unity projects.",
+  "unity": "2021.3",
+  "author": {
+    "name": "Harsh Patel",
+    "company": "MayaMystic",
+    "url": "https://google.com"
+  },
+  "keywords": [
+    "api",
+    "network",
+    "http",
+    "rest",
+    "json",
+    "sdk"
+  ],
+  "license": "Proprietary",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.2"
+  },
+  "samples": [
+    {
+      "displayName": "Basic Usage",
+      "description": "Basic login example showing how to use ApiManager and ApiHandlerBase.",
+      "path": "Samples~/BasicUsage"
+    }
+  ],
+  "documentationUrl": "https://google.com",
+  "changelogUrl": "https://google.com",
+  "repository": {
+    "type": "git",
+    "url": "https://google.com"
+  }
+}

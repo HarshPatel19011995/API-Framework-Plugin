@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/Documentation~/logo.png" width="80"/>
+<img src="https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/Documentation~/logo.png" width="90"/>
 
 <h1>🚀 MayaMystic API Framework</h1>
 
@@ -22,77 +22,418 @@
 
 <hr>
 
-</p> <hr> <h2>📑 Table of Contents</h2> <ul> <li><b><a href="#-overview">📌 Overview</a></b></li> <li><b><a href="#-quick-start">⚡ Quick Start</a></b></li> <li><b><a href="#-key-features">✨ Key Features</a></b></li> <li><b><a href="#-architecture">🧠 Architecture</a></b></li> <li><b><a href="#-api-request-lifecycle">🔄 API Request Lifecycle</a></b></li> <li><b><a href="#-core-components">⚙ Core Components</a></b></li> <li><b><a href="#-package-information">📦 Package Information</a></b></li> <li><b><a href="#-package-structure">📁 Package Structure</a></b></li> <li><b><a href="#-documentation">📚 Documentation</a></b></li> <li><b><a href="#-samples">🧪 Samples</a></b></li> <li><b><a href="#-roadmap">🗺 Roadmap</a></b></li> <li><b><a href="#-changelog">📜 Changelog</a></b></li> <li><b><a href="#-license">📄 License</a></b></li> <li><b><a href="#-author">👤 Author</a></b></li> </ul> <hr> <h2>📌 Overview</h2> <p> <b>MayaMystic API Framework</b> is a production-ready networking SDK for Unity. </p> <p> It introduces a <b>middleware pipeline architecture</b> allowing developers to build scalable API systems with clean architecture. </p> <h3>Built-in solutions include</h3> <ul> <li>Authentication</li> <li>Logging</li> <li>Retry strategies</li> <li>Endpoint resolution</li> <li>Request lifecycle management</li> </ul> <hr> <h2>⚡ Quick Start</h2> <details> <summary><b>Click to expand installation steps</b></summary> <br> <h3>1️⃣ Install via Git</h3> <p>Open <b>Unity Package Manager</b></p> <pre> Window → Package Manager </pre> <p>Click</p> <pre> + → Add package from Git URL </pre> <p>Paste</p> <pre> https://github.com/HarshPatel19011995/API-Framework-Plugin.git#v1.1.0 </pre> <hr> <h3>2️⃣ Create ApiManager</h3>
+<h2>📑 Table of Contents</h2>
+
+<ul>
+<li><b><a href="#overview">📌 Overview</a></b></li>
+<li><b><a href="#quick-start">⚡ Quick Start</a></b></li>
+<li><b><a href="#key-features">✨ Key Features</a></b></li>
+<li><b><a href="#architecture">🧠 Architecture</a></b></li>
+<li><b><a href="#api-request-lifecycle">🔄 API Request Lifecycle</a></b></li>
+<li><b><a href="#core-components">⚙ Core Components</a></b></li>
+<li><b><a href="#package-information">📦 Package Information</a></b></li>
+<li><b><a href="#package-structure">📁 Package Structure</a></b></li>
+<li><b><a href="#documentation">📚 Documentation</a></b></li>
+<li><b><a href="#samples">🧪 Samples</a></b></li>
+<li><b><a href="#roadmap">🗺 Roadmap</a></b></li>
+<li><b><a href="#changelog">📜 Changelog</a></b></li>
+<li><b><a href="#license">📄 License</a></b></li>
+<li><b><a href="#author">👤 Author</a></b></li>
+</ul>
+
+<hr>
+
+<h2 id="overview">📌 Overview</h2>
+
+<p>
+<b>MayaMystic API Framework</b> is a production-ready networking SDK for Unity.
+</p>
+
+<p>
+It introduces a <b>middleware pipeline architecture</b> allowing developers to build scalable API systems with clean architecture.
+</p>
+
+<h3>Built-in solutions include</h3>
+
+<ul>
+<li>Authentication</li>
+<li>Logging</li>
+<li>Retry strategies</li>
+<li>Endpoint resolution</li>
+<li>Request lifecycle management</li>
+</ul>
+
+<hr>
+
+<h2 id="quick-start">⚡ Quick Start</h2>
+
+<details>
+
+<summary><b>Click to expand installation steps</b></summary>
+
+<br>
+
+<h3>1️⃣ Install via Git</h3>
+
+Open <b>Unity Package Manager</b>
+
+<pre>
+Window → Package Manager
+</pre>
+
+Click
+
+<pre>
++ → Add package from Git URL
+</pre>
+
+Paste
+
+<pre>
+https://github.com/HarshPatel19011995/API-Framework-Plugin.git#v1.1.0
+</pre>
+
+<hr>
+
+<h3>2️⃣ Create ApiManager</h3>
+
+<pre>
 var apiManager = new ApiManager();
-<hr> <h3>3️⃣ Register Middleware</h3>
+</pre>
+
+<hr>
+
+<h3>3️⃣ Register Middleware</h3>
+
+<pre>
 apiManager.UseMiddleware(new LoggingMiddleware());
 apiManager.UseMiddleware(new AuthMiddleware(tokenProvider));
 apiManager.UseMiddleware(new SmartRetryMiddleware());
-<hr> <h3>4️⃣ Execute API Request</h3>
+</pre>
+
+<hr>
+
+<h3>4️⃣ Execute API Request</h3>
+
+<pre>
 await handler.ExecuteAsync();
-</details> <hr> <h2>✨ Key Features</h2> <table> <tr> <th>Feature</th> <th>Description</th> </tr> <tr> <td><b>Async ApiManager</b></td> <td>Centralized API request execution</td> </tr> <tr> <td><b>Middleware Pipeline</b></td> <td>Modular request processing</td> </tr> <tr> <td><b>Authentication Middleware</b></td> <td>Automatic Bearer token injection</td> </tr> <tr> <td><b>Smart Retry System</b></td> <td>Handles transient network failures</td> </tr> <tr> <td><b>Token Provider</b></td> <td>Abstract token management</td> </tr> <tr> <td><b>Endpoint Resolver</b></td> <td>Flexible API endpoint configuration</td> </tr> <tr> <td><b>JSON Serialization</b></td> <td>Powered by Newtonsoft JSON</td> </tr> </table> <hr> <h2>🧠 Architecture</h2> <details> <summary><b>View Architecture Diagram</b></summary> <br> <pre> ApiHandler ↓ ApiManager ↓ Middleware Pipeline ├── LoggingMiddleware ├── AuthMiddleware ├── SmartRetryMiddleware ↓ HttpClient ↓ Remote Server </pre> <h3>Benefits</h3> <ul> <li>Clean separation of concerns</li> <li>Extensible networking architecture</li> <li>Middleware driven request lifecycle</li> <li>Production-ready scalability</li> </ul> </details> <hr> <h2>🔄 API Request Lifecycle</h2> <details> <summary><b>View Request Lifecycle</b></summary> <br> <pre> Client Code ↓ ApiHandler ↓ ApiManager ↓ Middleware Processing ↓ HTTP Request ↓ Server Response ↓ JSON Deserialization ↓ Typed Model ↓ Result Returned </pre> </details> <hr> <h2>⚙ Core Components</h2> <h3>🔹 ApiManager</h3> <p>Responsible for executing API requests.</p> <h4>Features</h4> <ul> <li>Async request execution</li> <li>Request timeout handling</li> <li>Cancellation support</li> <li>Middleware-driven request processing</li> </ul>
+</pre>
 
-Example:
+</details>
 
+<hr>
+
+<h2 id="key-features">✨ Key Features</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><b>Async ApiManager</b></td>
+<td>Centralized API request execution</td>
+</tr>
+
+<tr>
+<td><b>Middleware Pipeline</b></td>
+<td>Modular request processing</td>
+</tr>
+
+<tr>
+<td><b>Authentication Middleware</b></td>
+<td>Automatic Bearer token injection</td>
+</tr>
+
+<tr>
+<td><b>Smart Retry System</b></td>
+<td>Handles transient network failures</td>
+</tr>
+
+<tr>
+<td><b>Token Provider</b></td>
+<td>Abstract token management</td>
+</tr>
+
+<tr>
+<td><b>Endpoint Resolver</b></td>
+<td>Flexible API endpoint configuration</td>
+</tr>
+
+<tr>
+<td><b>JSON Serialization</b></td>
+<td>Powered by Newtonsoft JSON</td>
+</tr>
+</table>
+
+<hr>
+
+<h2 id="architecture">🧠 Architecture</h2>
+
+<details>
+<summary><b>View Architecture Diagram</b></summary>
+
+<br>
+
+<pre>
+                ┌───────────────┐
+                │   ApiHandler  │
+                └───────┬───────┘
+                        │
+                        ▼
+                ┌───────────────┐
+                │   ApiManager  │
+                └───────┬───────┘
+                        │
+                        ▼
+              ┌─────────────────────┐
+              │  Middleware Pipeline │
+              └─────────┬───────────┘
+                        │
+        ┌───────────────┼────────────────┐
+        ▼               ▼                ▼
+┌─────────────┐ ┌─────────────┐ ┌─────────────────┐
+│ Logging MW  │ │ Auth MW     │ │ SmartRetry MW   │
+└──────┬──────┘ └──────┬──────┘ └─────────┬───────┘
+       │                │                  │
+       └────────────────┴──────────────────┘
+                        │
+                        ▼
+                ┌───────────────┐
+                │   HttpClient  │
+                └───────┬───────┘
+                        │
+                        ▼
+                ┌───────────────┐
+                │ Remote Server │
+                └───────────────┘
+</pre>
+
+<h3>Benefits</h3>
+
+<ul>
+<li>Clean separation of concerns</li>
+<li>Extensible networking architecture</li>
+<li>Middleware-driven request lifecycle</li>
+<li>Production-ready scalability</li>
+</ul>
+
+</details>
+
+<hr>
+
+<h2 id="api-request-lifecycle">🔄 API Request Lifecycle</h2>
+
+<details>
+
+<summary><b>View Request Lifecycle</b></summary>
+
+<br>
+
+<pre>
+Client Code
+    ↓
+ApiHandler
+    ↓
+ApiManager
+    ↓
+Middleware Processing
+    ↓
+HTTP Request
+    ↓
+Server Response
+    ↓
+JSON Deserialization
+    ↓
+Typed Model
+    ↓
+Result Returned
+</pre>
+
+</details>
+
+<hr>
+
+<h2 id="core-components">⚙ Core Components</h2>
+
+<h3>🔹 ApiManager</h3>
+
+Responsible for executing API requests.
+
+<ul>
+<li>Async request execution</li>
+<li>Request timeout handling</li>
+<li>Cancellation support</li>
+<li>Middleware-driven request processing</li>
+</ul>
+
+<pre>
 var apiManager = new ApiManager();
-<hr> <h3>🔹 Middleware Pipeline</h3>
+</pre>
+
+<hr>
+
+<h3>🔹 Middleware Pipeline</h3>
+
+<pre>
 apiManager.UseMiddleware(new LoggingMiddleware());
 apiManager.UseMiddleware(new AuthMiddleware(tokenProvider));
 apiManager.UseMiddleware(new SmartRetryMiddleware());
+</pre>
 
 Supported middleware:
 
-<ul> <li>Logging Middleware</li> <li>Authentication Middleware</li> <li>Retry Middleware</li> <li>Custom Middleware</li> </ul> <hr> <h3>🔹 Smart Retry Middleware</h3> <pre> Retry status codes 408 500 502 503 504 </pre> <pre> Retry strategy Attempt 1 → 500ms Attempt 2 → 1000ms Attempt 3 → 2000ms </pre> <hr> <h3>🔹 Authentication Middleware</h3> <pre> Authorization: Bearer &lt;token&gt; </pre>
+<ul>
+<li>Logging Middleware</li>
+<li>Authentication Middleware</li>
+<li>Retry Middleware</li>
+<li>Custom Middleware</li>
+</ul>
 
-Supported token types:
+<hr>
 
-<ul> <li>Static API keys</li> <li>JWT tokens</li> <li>Runtime tokens</li> <li>Persisted tokens</li> </ul> <hr> <h3>🔹 Token Provider</h3>
-public interface ITokenProvider
-{
-    string GetToken();
-}
+<h3>🔹 Smart Retry Middleware</h3>
 
-Example implementation:
+Retry status codes
 
-public class StaticTokenProvider : ITokenProvider
-{
-    private readonly string token;
+<pre>
+408
+500
+502
+503
+504
+</pre>
 
-    public StaticTokenProvider(string token)
-    {
-        this.token = token;
-    }
+Retry strategy
 
-    public string GetToken() => token;
-}
-<hr> <h3>🔹 Endpoint Resolver</h3>
-public interface IApiEndpointResolver
-{
-    string GetFullUrl(string endpointKey);
-}
+<pre>
+Attempt 1 → 500ms
+Attempt 2 → 1000ms
+Attempt 3 → 2000ms
+</pre>
 
-Example:
+<hr>
 
-public class ProjectApiConfig : ScriptableObject, IApiEndpointResolver
-{
-    public string BaseUrl;
-    public string Login;
+<h3>🔹 Authentication Middleware</h3>
 
-    public string GetFullUrl(string endpointKey)
-    {
-        return endpointKey switch
-        {
-            nameof(Login) => BaseUrl + Login,
-            _ => string.Empty
-        };
-    }
-}
-<hr> <h2>📦 Package Information</h2> <table> <tr> <th>Property</th> <th>Value</th> </tr> <tr> <td>Package Name</td> <td><code>com.mayamystic.apiframework</code></td> </tr> <tr> <td>Version</td> <td><b>1.1.0</b></td> </tr> <tr> <td>Minimum Unity Version</td> <td>2021.3 LTS</td> </tr> <tr> <td>Dependency</td> <td>com.unity.nuget.newtonsoft-json</td> </tr> <tr> <td>License</td> <td>Proprietary – MayaMystic</td> </tr> </table> <hr> <h2>📁 Package Structure</h2> <pre> Runtime/ ├── Core/ │ ├── Network/ │ ├── Middleware/ │ ├── Interfaces/ │ ├── Utilities/ │ └── Base/ Samples~/ Documentation~/ </pre> <hr> <h2>📚 Documentation</h2> <p> Full documentation available here </p> <p> 👉 https://harshpatel19011995.github.io/API-Framework-Plugin/ </p>
+<pre>
+Authorization: Bearer &lt;token&gt;
+</pre>
+
+Supported token types
+
+<ul>
+<li>Static API keys</li>
+<li>JWT tokens</li>
+<li>Runtime tokens</li>
+<li>Persisted tokens</li>
+</ul>
+
+<hr>
+
+<h2 id="package-information">📦 Package Information</h2>
+
+<table>
+<tr><th>Property</th><th>Value</th></tr>
+<tr><td>Package Name</td><td><code>com.mayamystic.apiframework</code></td></tr>
+<tr><td>Version</td><td><b>1.1.0</b></td></tr>
+<tr><td>Minimum Unity Version</td><td>2021.3 LTS</td></tr>
+<tr><td>Dependency</td><td>com.unity.nuget.newtonsoft-json</td></tr>
+<tr><td>License</td><td>Proprietary – MayaMystic</td></tr>
+</table>
+
+<hr>
+
+<h2 id="package-structure">📁 Package Structure</h2>
+
+<pre>
+Runtime/
+ ├── Core/
+ │    ├── Network/
+ │    ├── Middleware/
+ │    ├── Interfaces/
+ │    ├── Utilities/
+ │    └── Base/
+
+Samples~/
+Documentation~/
+</pre>
+
+<hr>
+
+<h2 id="documentation">📚 Documentation</h2>
+
+Full documentation:
+
+https://harshpatel19011995.github.io/API-Framework-Plugin/
 
 Includes:
 
-<ul> <li>Getting Started</li> <li>Architecture Overview</li> <li>Middleware System</li> <li>Authentication System</li> <li>Smart Retry System</li> <li>API Reference</li> </ul> <hr> <h2>🧪 Samples</h2> <pre> Samples~/BasicUsage </pre>
+<ul>
+<li>Getting Started</li>
+<li>Architecture Overview</li>
+<li>Middleware System</li>
+<li>Authentication System</li>
+<li>Smart Retry System</li>
+<li>API Reference</li>
+</ul>
 
-Demonstrates:
+<hr>
 
-<ul> <li>Creating ApiManager</li> <li>Registering middleware</li> <li>Performing API requests</li> </ul> <hr> <h2>🗺 Roadmap</h2> <table> <tr> <th>Version</th> <th>Planned Features</th> </tr> <tr> <td>v1.2</td> <td>Token refresh middleware</td> </tr> <tr> <td>v1.2</td> <td>Environment configuration</td> </tr> <tr> <td>v1.3</td> <td>Request logging abstraction</td> </tr> <tr> <td>v1.4</td> <td>API metrics system</td> </tr> <tr> <td>v2.0</td> <td>Plugin transport architecture</td> </tr> </table> <hr> <h2>📜 Changelog</h2> <p> https://github.com/HarshPatel19011995/API-Framework-Plugin/blob/main/CHANGELOG.md </p> <hr> <h2>📄 License</h2> <p> Proprietary – MayaMystic<br> All rights reserved. </p> <hr> <h2>👤 Author</h2> <p> <b>Harsh Patel</b><br> MayaMystic </p> <p> GitHub<br> https://github.com/HarshPatel19011995 </p> <hr> <h2>⭐ Contributing</h2> <p> Currently maintained internally.<br> External contributions may be accepted in future releases. </p>
+<h2 id="samples">🧪 Samples</h2>
+
+<pre>
+Samples~/BasicUsage
+</pre>
+
+Demonstrates
+
+<ul>
+<li>Creating ApiManager</li>
+<li>Registering middleware</li>
+<li>Performing API requests</li>
+</ul>
+
+<hr>
+
+<h2 id="roadmap">🗺 Roadmap</h2>
+
+<table>
+<tr><th>Version</th><th>Planned Features</th></tr>
+<tr><td>v1.2</td><td>Token refresh middleware</td></tr>
+<tr><td>v1.2</td><td>Environment configuration</td></tr>
+<tr><td>v1.3</td><td>Request logging abstraction</td></tr>
+<tr><td>v1.4</td><td>API metrics system</td></tr>
+<tr><td>v2.0</td><td>Plugin transport architecture</td></tr>
+</table>
+
+<hr>
+
+<h2 id="changelog">📜 Changelog</h2>
+
+https://github.com/HarshPatel19011995/API-Framework-Plugin/blob/main/CHANGELOG.md
+
+<hr>
+
+<h2 id="license">📄 License</h2>
+
+Proprietary – MayaMystic  
+All rights reserved.
+
+<hr>
+
+<h2 id="author">👤 Author</h2>
+
+<b>Harsh Patel</b>  
+MayaMystic
+
+GitHub  
+https://github.com/HarshPatel19011995
+
+<hr>
+
+<h2>⭐ Contributing</h2>
+
+Currently maintained internally.  
+External contributions may be accepted in future releases.

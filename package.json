@@ -1,16 +1,18 @@
 {
   "name": "com.mayamystic.apiframework",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "displayName": "MayaMystic API Framework",
   "description": "Enterprise-grade middleware-based API networking framework for Unity. Includes middleware pipeline, authentication injection, smart retry strategies, endpoint resolution, and strongly typed JSON serialization.",
   "unity": "2021.3",
 
   "icon": "icon.png",
+
   "author": {
     "name": "Harsh Patel",
     "company": "MayaMystic",
     "url": "https://github.com/HarshPatel19011995"
   },
+
   "keywords": [
     "api",
     "network",
@@ -21,10 +23,15 @@
     "middleware",
     "unity"
   ],
+
   "license": "Proprietary",
+
+  "licensesUrl": "https://github.com/HarshPatel19011995/API-Framework-Plugin/blob/main/LICENSE.md",
+
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "3.2.2"
   },
+
   "samples": [
     {
       "displayName": "Basic Usage",
@@ -32,10 +39,15 @@
       "path": "Samples~/BasicUsage"
     }
   ],
-  "documentationUrl": "https://harshpatel19011995.github.io/API-Framework-Plugin/Documentation~/",
-  "changelogUrl": "https://github.com/HarshPatel19011995/API-Framework-Plugin/blob/main/CHANGELOG.md",
+
+  "documentationUrl": "https://harshpatel19011995.github.io/API-Framework-Plugin/",
+
+  "changelogUrl": "https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/CHANGELOG.md",
+
   "repository": {
     "type": "git",
     "url": "https://github.com/HarshPatel19011995/API-Framework-Plugin"
-  }
+  },
+
+  "homepage": "https://github.com/HarshPatel19011995/API-Framework-Plugin"
 }

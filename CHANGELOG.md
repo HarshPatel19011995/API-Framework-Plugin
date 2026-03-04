@@ -1,35 +1,39 @@
-CHANGELOG
-========================================
+# Changelog
 
-All notable changes to MayaMystic API Framework
-are documented in this file.
+All notable changes to **MayaMystic API Framework** are documented in this file.
 
-========================================
-[1.1.0] - 2026-03-02
-========================================
+This project follows a structured changelog format to track improvements and new features across releases.
 
-ADDED
+---
+
+## [1.1.0] - 2026-03-02
+
+### ✨ Added
 - Middleware Pipeline Architecture
-- LoggingMiddleware
-- AuthMiddleware
-- SmartRetryMiddleware
-- Token Provider Abstraction
-- Endpoint Resolver Interface
-- Active request tracking
-- Cancellation support
-- Timeout handling
+- `LoggingMiddleware`
+- `AuthMiddleware`
+- `SmartRetryMiddleware`
+- Token Provider abstraction (`ITokenProvider`)
+- Endpoint Resolver interface (`IApiEndpointResolver`)
+- Active API request tracking
+- Request cancellation support
+- Configurable request timeout handling
 
-IMPROVED
-- Infrastructure separation
-- Middleware execution clarity
-- Authentication refactor
+### 🚀 Improved
+- Clear separation between infrastructure and request handling
+- Middleware execution pipeline readability
+- Authentication middleware architecture
+- Internal request lifecycle flow
 
-========================================
-[1.0.0] - 2026-02-01
-========================================
+---
 
-ADDED
-- Initial ApiManager (HttpClient based)
-- Basic request execution
-- JSON serialization support
-- Core networking foundation
+## [1.0.0] - 2026-03-01
+
+### ✨ Added
+- Initial `ApiManager` implementation using `HttpClient`
+- Basic API request execution system
+- JSON serialization support (Newtonsoft JSON)
+- Core networking infrastructure
+- Foundation for future middleware architecture
+
+---

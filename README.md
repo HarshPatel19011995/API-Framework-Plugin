@@ -1,8 +1,14 @@
+<h1 align="center">🚀 MayaMystic API Framework</h1>
+
 <p align="left">
-<img src="https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/Documentation~/logo.png" width="64"/>
- <h1>🚀 MayaMystic API Framework</h1> </p>
+<img src="https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/.github/logo.png" width="900"/>
+</p>
 
+<p align="left">
+<b>Enterprise-grade middleware-based API networking framework for Unity</b>
+</p>
 
+<hr>
 
 🚀 MayaMystic API Framework
 <h1 align="center">🚀 MayaMystic API Framework</h1> <p align="center"> <img src="https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/.github/banner.png" width="850"/> </p> <p align="center"> <b>Enterprise-grade middleware-based API networking framework for Unity</b> </p> <p align="center">
@@ -23,6 +29,7 @@ Enterprise-Grade API Networking Framework for Unity
 </p>
 
 <hr>
+
 
 
 </p> <hr> <h2>📑 Table of Contents</h2> <ul> <li><b><a href="#-overview">📌 Overview</a></b></li> <li><b><a href="#-quick-start">⚡ Quick Start</a></b></li> <li><b><a href="#-key-features">✨ Key Features</a></b></li> <li><b><a href="#-architecture">🧠 Architecture</a></b></li> <li><b><a href="#-api-request-lifecycle">🔄 API Request Lifecycle</a></b></li> <li><b><a href="#-core-components">⚙ Core Components</a></b></li> <li><b><a href="#-package-information">📦 Package Information</a></b></li> <li><b><a href="#-package-structure">📁 Package Structure</a></b></li> <li><b><a href="#-documentation">📚 Documentation</a></b></li> <li><b><a href="#-samples">🧪 Samples</a></b></li> <li><b><a href="#-roadmap">🗺 Roadmap</a></b></li> <li><b><a href="#-changelog">📜 Changelog</a></b></li> <li><b><a href="#-license">📄 License</a></b></li> <li><b><a href="#-author">👤 Author</a></b></li> </ul> <hr> <h2>📌 Overview</h2> <p> <b>MayaMystic API Framework</b> is a production-ready networking SDK for Unity. </p> <p> It introduces a <b>middleware pipeline architecture</b> allowing developers to build scalable API systems with clean architecture. </p> <h3>Built-in solutions include</h3> <ul> <li>Authentication</li> <li>Logging</li> <li>Retry strategies</li> <li>Endpoint resolution</li> <li>Request lifecycle management</li> </ul> <hr> <h2>⚡ Quick Start</h2> <details> <summary><b>Click to expand installation steps</b></summary> <br> <h3>1️⃣ Install via Git</h3> <p>Open <b>Unity Package Manager</b></p> <pre> Window → Package Manager </pre> <p>Click</p> <pre> + → Add package from Git URL </pre> <p>Paste</p> <pre> https://github.com/HarshPatel19011995/API-Framework-Plugin.git#v1.1.0 </pre> <hr> <h3>2️⃣ Create ApiManager</h3>

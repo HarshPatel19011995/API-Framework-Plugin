@@ -1,11 +1,33 @@
-MayaMystic API Framework
+🚀 MayaMystic API Framework
+<p align="center"> <img src="https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/.github/banner.png" width="850"/> </p> <p align="center"> <b>Enterprise-grade middleware-based API networking framework for Unity</b> </p> <p align="center">
 
 
-Enterprise-grade middleware-based API networking framework for Unity.
 
-MayaMystic API Framework provides a clean, scalable architecture for building API systems in Unity applications. It introduces a middleware pipeline similar to modern backend frameworks, allowing developers to implement authentication, retries, logging, and request handling in a modular way.
 
-🚀 Quick Start
+
+
+
+
+</p>
+📌 Overview
+
+MayaMystic API Framework is a production-ready networking SDK for Unity.
+
+It introduces a middleware pipeline architecture allowing developers to build scalable API systems with clean architecture.
+
+The framework provides built-in solutions for:
+
+Authentication
+
+Logging
+
+Retry strategies
+
+Endpoint resolution
+
+Request lifecycle management
+
+⚡ Quick Start
 1️⃣ Install via Git
 
 Open Unity Package Manager
@@ -17,81 +39,110 @@ Click:
 + → Add package from Git URL
 
 Paste:
-https://github.com/HarshPatel19011995/API-Framework-Plugin.git#v1.1.0
 
+https://github.com/HarshPatel19011995/API-Framework-Plugin.git#v1.1.0
 2️⃣ Create ApiManager
 var apiManager = new ApiManager();
-
 3️⃣ Register Middleware
 apiManager.UseMiddleware(new LoggingMiddleware());
 apiManager.UseMiddleware(new AuthMiddleware(tokenProvider));
 apiManager.UseMiddleware(new SmartRetryMiddleware());
-
-4️⃣ Execute Request
+4️⃣ Execute API Request
 await handler.ExecuteAsync();
-✨ Features
+✨ Key Features
 Feature	Description
 Async ApiManager	Centralized API request execution
-Middleware Pipeline	Flexible request processing architecture
+Middleware Pipeline	Modular request processing
 Authentication Middleware	Automatic Bearer token injection
-Smart Retry Middleware	Exponential backoff retry system
+Smart Retry System	Handles transient network failures
 Token Provider	Abstract token management
-Endpoint Resolver	Centralized endpoint configuration
+Endpoint Resolver	Flexible API endpoint configuration
 JSON Serialization	Powered by Newtonsoft JSON
-
 🧠 Architecture
 
-The framework uses a middleware pipeline architecture inspired by modern backend frameworks.
+The framework follows a middleware pipeline architecture inspired by modern backend systems.
 
 ApiHandler
-    ↓
+     ↓
 ApiManager
-    ↓
+     ↓
 Middleware Pipeline
-    ├── LoggingMiddleware
-    ├── AuthMiddleware
-    ├── SmartRetryMiddleware
-    ↓
+     ├── LoggingMiddleware
+     ├── AuthMiddleware
+     ├── SmartRetryMiddleware
+     ↓
 HttpClient
-    ↓
+     ↓
 Remote Server
+Benefits
 
-This allows flexible request processing and easy extension through custom middleware.
+Clean separation of concerns
 
-⚙ Core Components
+Extensible networking architecture
 
+Middleware driven request lifecycle
+
+Production-ready scalability
+
+🔄 API Request Lifecycle
+Client Code
+     ↓
+ApiHandler
+     ↓
 ApiManager
+     ↓
+Middleware Processing
+     ↓
+HTTP Request
+     ↓
+Server Response
+     ↓
+JSON Deserialization
+     ↓
+Typed Model
+     ↓
+Result Returned
+⚙ Core Components
+🔹 ApiManager
 
-The central component responsible for executing API requests.
+Responsible for executing API requests.
 
 Features:
 
-Async request handling
+Async request execution
 
-Middleware pipeline execution
-
-Request timeout management
+Request timeout handling
 
 Cancellation support
+
+Middleware-driven request processing
 
 Example:
 
 var apiManager = new ApiManager();
-Middleware System
+🔹 Middleware Pipeline
 
-Middleware allows request processing before and after HTTP execution.
+Middleware processes requests before and after HTTP execution.
 
-Example registration:
+Example:
 
 apiManager.UseMiddleware(new LoggingMiddleware());
 apiManager.UseMiddleware(new AuthMiddleware(tokenProvider));
 apiManager.UseMiddleware(new SmartRetryMiddleware());
 
-Middleware order defines execution order.
+Supported middleware:
 
-Smart Retry Middleware
+Logging Middleware
 
-Handles transient network failures automatically.
+Authentication Middleware
+
+Retry Middleware
+
+Custom Middleware
+
+🔹 Smart Retry Middleware
+
+Automatically retries transient network failures.
 
 Retry status codes:
 
@@ -101,18 +152,18 @@ Retry status codes:
 503
 504
 
-Example retry timing:
+Retry strategy:
 
 Attempt 1 → 500ms
 Attempt 2 → 1000ms
 Attempt 3 → 2000ms
-Authentication Middleware
+🔹 Authentication Middleware
 
 Automatically injects authentication headers.
 
 Authorization: Bearer <token>
 
-Supports:
+Supported token types:
 
 Static API keys
 
@@ -122,9 +173,9 @@ Runtime tokens
 
 Persisted tokens
 
-Token Provider System
+🔹 Token Provider
 
-Token handling is abstracted via an interface.
+Token management abstraction.
 
 public interface ITokenProvider
 {
@@ -144,9 +195,9 @@ public class StaticTokenProvider : ITokenProvider
 
     public string GetToken() => token;
 }
-Endpoint Resolver
+🔹 Endpoint Resolver
 
-Projects control endpoint resolution using an abstraction.
+Provides flexible API endpoint configuration.
 
 public interface IApiEndpointResolver
 {
@@ -189,31 +240,32 @@ Samples~/
 Documentation~/
 📚 Documentation
 
-Full documentation:
+Full documentation available here:
 
+👉
 https://harshpatel19011995.github.io/API-Framework-Plugin/
 
-Documentation includes:
+Includes:
 
 Getting Started
 
-Architecture overview
+Architecture Overview
 
-Middleware pipeline
+Middleware System
 
-Authentication system
+Authentication System
 
-Smart retry system
+Smart Retry System
 
-API reference
+API Reference
 
 🧪 Samples
 
-Example usage can be found in:
+Example implementation included in:
 
 Samples~/BasicUsage
 
-The sample demonstrates:
+Demonstrates:
 
 Creating ApiManager
 
@@ -221,52 +273,33 @@ Registering middleware
 
 Performing API requests
 
-🧭 Design Principles
-
-The framework follows modern SDK architecture principles:
-
-Clean separation of infrastructure and business logic
-
-Middleware-driven request lifecycle
-
-Dependency inversion
-
-Modular reusable components
-
-Production-ready scalability
-
-Architecture inspiration:
-
-ASP.NET Core middleware pipeline
-
-Unreal Engine subsystem design
-
-Modern SDK architecture patterns
-
+🗺 Roadmap
+Version	Planned Features
+v1.2	Token refresh middleware
+v1.2	Environment configuration
+v1.3	Request logging abstraction
+v1.4	API metrics system
+v2.0	Plugin transport architecture
 📜 Changelog
 
 View release history:
 
 https://github.com/HarshPatel19011995/API-Framework-Plugin/blob/main/CHANGELOG.md
 
-🗺 Roadmap
-
-Planned future improvements:
-
-Version	Planned Features
-v1.2	Token refresh middleware
-v1.2	Environment configuration system
-v1.3	Request logging abstraction
-v1.4	API metrics & monitoring
-v2.0	Plugin transport layer support
-
 📄 License
+
 Proprietary – MayaMystic
 All rights reserved.
 
 👤 Author
+
 Harsh Patel
 MayaMystic
 
 GitHub
 https://github.com/HarshPatel19011995
+
+⭐ Contributing
+
+Currently maintained internally.
+External contributions may be accepted in future releases.

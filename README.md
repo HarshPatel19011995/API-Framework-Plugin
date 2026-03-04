@@ -1,6 +1,6 @@
 <p align="left">
 <img src="https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/Documentation~/logo.png" width="64"/>
- <h1 align="center">🚀 MayaMystic API Framework</h1> </p>
+ <h1 align="left">🚀 MayaMystic API Framework</h1> </p>
 
 
 

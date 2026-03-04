@@ -366,7 +366,7 @@ Documentation~/
 
 Full documentation:
 
-[https://harshpatel19011995.github.io/API-Framework-Plugin/](https://harshpatel19011995.github.io/API-Framework-Plugin/Documentation~/]
+[https://harshpatel19011995.github.io/API-Framework-Plugin/Documentation~/]
 
 Includes:
 

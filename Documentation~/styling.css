@@ -94,3 +94,22 @@ button {
     padding-left: 10px;
     background-color: #2c2c2c;
 }
+
+.logo-container{
+
+display:flex;
+align-items:center;
+gap:10px;
+
+padding:15px;
+border-bottom:1px solid rgba(255,255,255,0.1);
+
+}
+
+.logo{
+
+width:36px;
+height:36px;
+border-radius:8px;
+
+}

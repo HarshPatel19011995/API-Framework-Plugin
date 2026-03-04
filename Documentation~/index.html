@@ -1,45 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>MayaMystic API Documentation</title>
-    <link rel="stylesheet" href="styling.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MayaMystic API Documentation</title>
+
+<link rel="stylesheet" href="styling.css">
+
 </head>
+
 <body>
 
 <div class="sidebar">
-    <h2>MayaMystic API</h2>
+
+    <!-- Logo / Branding -->
+    <div class="logo-container">
+
+        <img src="logo.png" class="logo">
+
+        <h2>MayaMystic API</h2>
+
+    </div>
 
     <input type="text" id="searchInput" class="search-box" placeholder="Search...">
 
+    <!-- Overview -->
     <div class="menu-section">Overview</div>
+
     <a href="#" data-page="overview">Introduction</a>
     <a href="#" data-page="getting-started">Getting Started</a>
     <a href="#" data-page="installation">Installation</a>
 
+    <!-- Core -->
     <div class="menu-section">Core</div>
+
     <a href="#" data-page="architecture">Architecture</a>
     <a href="#" data-page="api-manager">ApiManager</a>
     <a href="#" data-page="middleware">Middleware</a>
     <a href="#" data-page="token-system">Token System</a>
     <a href="#" data-page="endpoint">Endpoint Resolver</a>
 
+    <!-- Advanced -->
     <div class="menu-section">Advanced</div>
+
     <a href="#" data-page="smart-retry">Smart Retry</a>
     <a href="#" data-page="authentication">Authentication</a>
     <a href="#" data-page="extending">Extending Middleware</a>
 
+    <!-- Reference -->
     <div class="menu-section">Reference</div>
+
     <a href="#" data-page="api-reference">API Reference</a>
 
+    <!-- Footer -->
     <div class="sidebar-footer">
+
         <button onclick="toggleTheme()">🌙 Toggle Theme</button>
+
     </div>
+
 </div>
 
+
+<!-- Main Content -->
+
 <div class="content" id="content-area">
+
     <!-- Dynamic content loads here -->
+
 </div>
+
 
 <script src="script.js"></script>
 

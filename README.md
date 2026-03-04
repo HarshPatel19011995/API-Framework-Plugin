@@ -1,12 +1,11 @@
+<h1 align="center">🚀 MayaMystic API Framework</h1>
+
 <p align="center">
-<img src="Documentation~/images/logo.png" width="400"/>
+<img src="https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/.github/banner.png" width="900"/>
 </p>
 
-<h1 align="center">Maya Mystic Creations</h1>
-<h3 align="center">API Framework</h3>
-
 <p align="center">
-Enterprise-Grade API Networking Framework for Unity
+<b>Enterprise-grade middleware-based API networking framework for Unity</b>
 </p>
 
 <hr>

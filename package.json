@@ -4,6 +4,8 @@
   "displayName": "MayaMystic API Framework",
   "description": "Enterprise-grade middleware-based API networking framework for Unity. Includes middleware pipeline, authentication injection, smart retry strategies, endpoint resolution, and strongly typed JSON serialization.",
   "unity": "2021.3",
+
+  "icon": "icon.png",
   "author": {
     "name": "Harsh Patel",
     "company": "MayaMystic",

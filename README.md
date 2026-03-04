@@ -1,4 +1,4 @@
-🚀 MayaMystic API Framework
+#🚀 MayaMystic API Framework
 <p align="center"> <img src="https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/.github/banner.png" width="850"/> </p> <p align="center"> <b>Enterprise-grade middleware-based API networking framework for Unity</b> </p> <p align="center">
 
 
@@ -9,13 +9,43 @@
 
 
 </p>
+📑 Table of Contents
+
+📌 Overview
+
+⚡ Quick Start
+
+✨ Key Features
+
+🧠 Architecture
+
+🔄 API Lifecycle
+
+⚙ Core Components
+
+📦 Package Information
+
+📁 Package Structure
+
+📚 Documentation
+
+🧪 Samples
+
+🗺 Roadmap
+
+📜 Changelog
+
+📄 License
+
+👤 Author
+
 📌 Overview
 
 MayaMystic API Framework is a production-ready networking SDK for Unity.
 
 It introduces a middleware pipeline architecture allowing developers to build scalable API systems with clean architecture.
 
-The framework provides built-in solutions for:
+Built-in solutions include:
 
 Authentication
 
@@ -28,6 +58,7 @@ Endpoint resolution
 Request lifecycle management
 
 ⚡ Quick Start
+<details> <summary><b>Click to expand installation steps</b></summary> <br>
 1️⃣ Install via Git
 
 Open Unity Package Manager
@@ -49,6 +80,7 @@ apiManager.UseMiddleware(new AuthMiddleware(tokenProvider));
 apiManager.UseMiddleware(new SmartRetryMiddleware());
 4️⃣ Execute API Request
 await handler.ExecuteAsync();
+</details>
 ✨ Key Features
 Feature	Description
 Async ApiManager	Centralized API request execution
@@ -59,9 +91,7 @@ Token Provider	Abstract token management
 Endpoint Resolver	Flexible API endpoint configuration
 JSON Serialization	Powered by Newtonsoft JSON
 🧠 Architecture
-
-The framework follows a middleware pipeline architecture inspired by modern backend systems.
-
+<details> <summary><b>View Architecture Diagram</b></summary> <br>
 ApiHandler
      ↓
 ApiManager
@@ -84,7 +114,9 @@ Middleware driven request lifecycle
 
 Production-ready scalability
 
+</details>
 🔄 API Request Lifecycle
+<details> <summary><b>View Request Lifecycle</b></summary> <br>
 Client Code
      ↓
 ApiHandler
@@ -102,12 +134,13 @@ JSON Deserialization
 Typed Model
      ↓
 Result Returned
+</details>
 ⚙ Core Components
 🔹 ApiManager
 
 Responsible for executing API requests.
 
-Features:
+Features
 
 Async request execution
 
@@ -123,8 +156,6 @@ var apiManager = new ApiManager();
 🔹 Middleware Pipeline
 
 Middleware processes requests before and after HTTP execution.
-
-Example:
 
 apiManager.UseMiddleware(new LoggingMiddleware());
 apiManager.UseMiddleware(new AuthMiddleware(tokenProvider));
@@ -142,7 +173,7 @@ Custom Middleware
 
 🔹 Smart Retry Middleware
 
-Automatically retries transient network failures.
+Retries transient network failures.
 
 Retry status codes:
 
@@ -174,9 +205,6 @@ Runtime tokens
 Persisted tokens
 
 🔹 Token Provider
-
-Token management abstraction.
-
 public interface ITokenProvider
 {
     string GetToken();
@@ -196,9 +224,6 @@ public class StaticTokenProvider : ITokenProvider
     public string GetToken() => token;
 }
 🔹 Endpoint Resolver
-
-Provides flexible API endpoint configuration.
-
 public interface IApiEndpointResolver
 {
     string GetFullUrl(string endpointKey);

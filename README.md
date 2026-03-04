@@ -1,4 +1,5 @@
-#🚀 MayaMystic API Framework
+<hr> <h2>📌 Overview</h2>
+🚀 MayaMystic API Framework
 <p align="center"> <img src="https://raw.githubusercontent.com/HarshPatel19011995/API-Framework-Plugin/main/.github/banner.png" width="850"/> </p> <p align="center"> <b>Enterprise-grade middleware-based API networking framework for Unity</b> </p> <p align="center">
 
 

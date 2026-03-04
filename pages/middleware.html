@@ -1,0 +1,17 @@
+<h1>Middleware</h1>
+
+<p>Middleware allows request/response processing before and after HTTP execution.</p>
+
+<h2>Built-in Middleware</h2>
+<ul>
+<li>LoggingMiddleware</li>
+<li>AuthMiddleware</li>
+<li>SmartRetryMiddleware</li>
+</ul>
+
+<h2>Execution Order Matters</h2>
+<pre>
+apiManager.UseMiddleware(new LoggingMiddleware());
+apiManager.UseMiddleware(new AuthMiddleware(tokenProvider));
+apiManager.UseMiddleware(new SmartRetryMiddleware());
+</pre>

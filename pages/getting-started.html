@@ -1,0 +1,21 @@
+<h1>Getting Started</h1>
+
+<p>This guide walks you through integrating MayaMystic API Framework into your Unity project.</p>
+
+<h2>Step 1 — Install Package</h2>
+<pre>
+Add package via Unity Package Manager
+or place inside Packages/ folder.
+</pre>
+
+<h2>Step 2 — Create ApiManager</h2>
+<pre>
+var apiManager = new ApiManager();
+</pre>
+
+<h2>Step 3 — Register Middleware</h2>
+<pre>
+apiManager.UseMiddleware(new LoggingMiddleware());
+apiManager.UseMiddleware(new AuthMiddleware(tokenProvider));
+apiManager.UseMiddleware(new SmartRetryMiddleware());
+</pre>

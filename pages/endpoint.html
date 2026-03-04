@@ -1,0 +1,13 @@
+<h1>Endpoint Resolver</h1>
+
+<p>Resolves endpoint keys to full URLs.</p>
+
+<h2>Interface</h2>
+<pre>
+public interface IApiEndpointResolver
+{
+    string GetFullUrl(string endpointKey);
+}
+</pre>
+
+<p>This keeps the SDK infrastructure-only.</p>

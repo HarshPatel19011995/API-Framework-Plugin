@@ -1,0 +1,32 @@
+<h1>MayaMystic API Framework</h1>
+
+<p>
+Enterprise-grade middleware-based networking SDK for Unity.
+Designed for scalable production systems using clean architecture
+and middleware execution pipelines.
+</p>
+
+<h2>Core Features</h2>
+<ul>
+<li>Async HttpClient-based ApiManager</li>
+<li>Middleware Execution Pipeline</li>
+<li>Authentication Injection</li>
+<li>Smart Retry Middleware</li>
+<li>Token Provider Abstraction</li>
+<li>Endpoint Resolver System</li>
+<li>Strongly Typed JSON Serialization</li>
+</ul>
+
+<h2>Architecture Flow</h2>
+<pre>
+Application Layer
+    └── ApiHandler
+
+Infrastructure Layer
+    ├── ApiManager
+    ├── Middleware Pipeline
+    │     ├── LoggingMiddleware
+    │     ├── AuthMiddleware
+    │     ├── SmartRetryMiddleware
+    └── HttpClient
+</pre>

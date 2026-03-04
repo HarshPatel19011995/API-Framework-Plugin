@@ -1,0 +1,14 @@
+<h1>Extending Middleware</h1>
+
+<p>You can create custom middleware by implementing the middleware interface.</p>
+
+<h2>Example</h2>
+<pre>
+public class CustomMiddleware : IApiMiddleware
+{
+    public async Task InvokeAsync(...)
+    {
+        // Custom logic
+    }
+}
+</pre>

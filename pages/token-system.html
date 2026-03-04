@@ -1,0 +1,21 @@
+<h1>Token System</h1>
+
+<p>The SDK depends only on ITokenProvider abstraction.</p>
+
+<h2>Interface</h2>
+<pre>
+public interface ITokenProvider
+{
+    string GetToken();
+}
+</pre>
+
+<h2>Static Token</h2>
+<pre>
+new StaticTokenProvider("your_token");
+</pre>
+
+<h2>Runtime Token</h2>
+<pre>
+runtimeProvider.SetToken(newToken);
+</pre>

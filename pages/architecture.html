@@ -1,0 +1,19 @@
+<h1>Architecture</h1>
+
+<p>The framework is built using middleware pipeline architecture.</p>
+
+<h2>Layer Separation</h2>
+<ul>
+<li><strong>Application Layer</strong> — ApiHandlers, Business Logic</li>
+<li><strong>Infrastructure Layer</strong> — ApiManager, Middleware, Transport</li>
+</ul>
+
+<h2>Execution Pipeline</h2>
+<pre>
+Request →
+LoggingMiddleware →
+AuthMiddleware →
+SmartRetryMiddleware →
+HttpClient →
+Response
+</pre>

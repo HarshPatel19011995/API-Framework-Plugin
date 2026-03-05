@@ -14,4 +14,12 @@ namespace MayaMystic.ApiFramework.Core.Network
         DELETE,
         PATCH
     }
+
+    public enum ApiBodyType
+    {
+        None,
+        Json,
+        FormUrlEncoded,
+        Multipart
+    }
 }

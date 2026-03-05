@@ -5,19 +5,27 @@
  *
  *  Description :
  *  Abstraction for providing authentication tokens.
+ *  Allows frameworks or applications to set/update tokens dynamically.
  **************************************************************************/
 
 namespace MayaMystic.ApiFramework.Core.Interfaces
 {
-   private string token;
+    public interface ITokenProvider
+    {
+        /// <summary>
+        /// Returns the current authentication token.
+        /// </summary>
+        string GetToken();
 
-public void SetToken(string newToken)
-{
-	token = newToken;
-}
+        /// <summary>
+        /// Updates the authentication token.
+        /// Typically called after login or token refresh.
+        /// </summary>
+        void SetToken(string token);
 
-public string GetToken()
-{
-	return token;
-}
+        /// <summary>
+        /// Clears the stored token (logout scenario).
+        /// </summary>
+        void ClearToken();
+    }
 }

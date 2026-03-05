@@ -1,8 +1,12 @@
+/**************************************************************************
+ *  Project     : MayaMystic API Framework
+ *  Author      : Harsh Patel
+ *  Company     : MayaMystic
+ **************************************************************************/
+
 namespace MayaMystic.ApiFramework.Core.Network
 {
-    /// <summary>
-    /// Defines the type of request body.
-    /// </summary>
+
     public enum ApiBodyType
     {
         None,

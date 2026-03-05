@@ -1,6 +1,6 @@
 {
   "name": "com.mayamystic.apiframework",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "displayName": "MayaMystic API Framework",
   "description": "Enterprise-grade middleware-based API networking framework for Unity. Includes middleware pipeline, authentication injection, smart retry strategies, endpoint resolution, and strongly typed JSON serialization.",
   "unity": "2021.3",

@@ -4,7 +4,7 @@
  *  File        : ApiRequestParams.cs
  *  Author      : Harsh Patel
  *  Company     : MayaMystic
- *  Version     : 1.0.0
+ *  Version     : 1.1.0
  * 
  *  Description :
  *  Encapsulates all necessary parameters for an API request.
@@ -26,16 +26,22 @@ namespace MayaMystic.ApiFramework.Core.Network
         // HTTP Verb
         public HttpVerb Verb = HttpVerb.GET;
 
+        // Body type
+        public ApiBodyType BodyType = ApiBodyType.None;
+
         // Bearer token
         public string AuthToken;
 
-        // JSON or raw body
-        public string Content;
+        // JSON body
+        public string JsonContent;
+
+        // Form fields
+        public Dictionary<string, string> FormFields = new();
 
         // Multipart binary body
         public byte[] MultipartBody;
 
-        // Boundary (auto-generated if null)
+        // Multipart boundary
         public string MultipartBoundary;
 
         // Additional headers
@@ -51,8 +57,13 @@ namespace MayaMystic.ApiFramework.Core.Network
         // Internal retry tracking
         internal int CurrentRetryAttempt = 0;
 
-        // Multipart flag
-        public bool IsMultipart = false;
+        /// <summary>
+        /// Helper to add form field
+        /// </summary>
+        public void AddFormField(string key, string value)
+        {
+            FormFields[key] = value;
+        }
 
         /// <summary>
         /// Builds HttpRequestMessage based on parameters.
@@ -66,25 +77,8 @@ namespace MayaMystic.ApiFramework.Core.Network
             );
 
             // -------------------------
-            // Headers
+            // Authorization
             // -------------------------
-
-            if (IsMultipart)
-            {
-                MultipartBoundary ??= "----MayaMysticBoundary";
-
-                request.Headers.TryAddWithoutValidation(
-                    "Content-Type",
-                    $"multipart/form-data; boundary={MultipartBoundary}"
-                );
-            }
-            else
-            {
-                request.Headers.TryAddWithoutValidation(
-                    "Content-Type",
-                    "application/json"
-                );
-            }
 
             if (!string.IsNullOrEmpty(AuthToken))
             {
@@ -94,29 +88,52 @@ namespace MayaMystic.ApiFramework.Core.Network
                 );
             }
 
+            // Additional headers
             foreach (var header in AdditionalHeaders)
             {
                 request.Headers.TryAddWithoutValidation(header.Key, header.Value);
             }
 
             // -------------------------
-            // Body
+            // Body Handling
             // -------------------------
 
-            if (Verb != HttpVerb.GET)
+            if (Verb == HttpVerb.GET)
+                return request;
+
+            switch (BodyType)
             {
-                if (IsMultipart && MultipartBody != null)
-                {
-                    request.Content = new ByteArrayContent(MultipartBody);
-                }
-                else if (!string.IsNullOrEmpty(Content))
-                {
+                case ApiBodyType.Json:
+
                     request.Content = new StringContent(
-                        Content,
+                        JsonContent ?? "",
                         Encoding.UTF8,
                         "application/json"
                     );
-                }
+
+                    break;
+
+                case ApiBodyType.FormUrlEncoded:
+
+                    request.Content = new FormUrlEncodedContent(FormFields);
+
+                    break;
+
+                case ApiBodyType.Multipart:
+
+                    MultipartBoundary ??= "----MayaMysticBoundary";
+
+                    var content = new MultipartFormDataContent(MultipartBoundary);
+
+                    if (MultipartBody != null)
+                    {
+                        var fileContent = new ByteArrayContent(MultipartBody);
+                        content.Add(fileContent, "file", "upload.bin");
+                    }
+
+                    request.Content = content;
+
+                    break;
             }
 
             return request;

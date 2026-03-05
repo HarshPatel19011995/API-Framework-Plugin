@@ -9,8 +9,15 @@
 
 namespace MayaMystic.ApiFramework.Core.Interfaces
 {
-    public interface ITokenProvider
-    {
-        string GetToken();
-    }
+   private string token;
+
+public void SetToken(string newToken)
+{
+	token = newToken;
+}
+
+public string GetToken()
+{
+	return token;
+}
 }

@@ -35,7 +35,7 @@ namespace MayaMystic.ApiFramework.Samples
 
             var request = new ApiRequestParams
             {
-                Url = resolver.GetFullUrl("Login"),
+                Url = resolver.GetFullUrl(nameof(SampleApiConfig.Login)),
                 Verb = HttpVerb.POST,
                 BodyType = ApiBodyType.FormUrlEncoded
             };

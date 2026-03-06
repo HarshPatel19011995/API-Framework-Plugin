@@ -6,7 +6,7 @@ namespace MayaMystic.ApiFramework.Samples
     [CreateAssetMenu(menuName = "MayaMystic/Sample API Config")]
     public class SampleApiConfig : ScriptableObject, IApiEndpointResolver
     {
-        public string BaseUrl = "https://yourapi.com";
+        public string BaseUrl = "https://api.example.com";
         public string Login = "/login";
 
         public string GetFullUrl(string endpointKey)

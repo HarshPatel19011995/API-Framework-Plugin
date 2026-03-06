@@ -1,7 +1,15 @@
 /**************************************************************************
+ * 
  *  Project     : MayaMystic API Framework
+ *  File        : ApiHandlerBase.cs
  *  Author      : Harsh Patel
  *  Company     : MayaMystic
+ *  Version     : 1.3.0
+ * 
+ *  Description :
+ *  Base class for all API request handlers.
+ *  Provides standardized request execution and response routing.
+ * 
  **************************************************************************/
 
 using System.Threading.Tasks;
@@ -23,7 +31,18 @@ namespace MayaMystic.ApiFramework.Core.Base
 
         public async Task ExecuteAsync()
         {
-            var response = await ApiManager.SendAsync(BuildRequestParams());
+            var requestParams = BuildRequestParams();
+
+            if (requestParams == null)
+            {
+                OnServerError("Request parameters are null.");
+                return;
+            }
+
+            var response = await ApiManager.SendAsync(requestParams);
+
+            OnAnyResponse(response);
+
             RouteResponse(response);
         }
 
@@ -35,38 +54,45 @@ namespace MayaMystic.ApiFramework.Core.Base
                 return;
             }
 
-            if (response.IsSuccess)
-            {
-                switch ((NetworkResponseCode)response.StatusCode)
-                {
-                    case NetworkResponseCode.Ok:
-                        OnSuccess(response.Body);
-                        break;
+            var statusCode = (NetworkResponseCode)response.StatusCode;
 
-                    case NetworkResponseCode.BadRequest:
-                        OnBadRequest(response.Body);
-                        break;
-
-                    case NetworkResponseCode.Unauthorized:
-                        OnUnauthorized(response.Body);
-                        break;
-
-                    case NetworkResponseCode.InternalServerError:
-                    case NetworkResponseCode.Timeout:
-                    default:
-                        OnServerError(response.ErrorMessage);
-                        break;
-                }
-            }
-            else
+            if (!response.IsSuccess)
             {
                 OnServerError(response.ErrorMessage);
+                return;
+            }
+
+            switch (statusCode)
+            {
+                case NetworkResponseCode.Ok:
+                    OnSuccess(response.Body);
+                    break;
+
+                case NetworkResponseCode.BadRequest:
+                    OnBadRequest(response.Body);
+                    break;
+
+                case NetworkResponseCode.Unauthorized:
+                    OnUnauthorized(response.Body);
+                    break;
+
+                case NetworkResponseCode.Timeout:
+                case NetworkResponseCode.InternalServerError:
+                default:
+                    OnServerError(response.ErrorMessage);
+                    break;
             }
         }
 
-        // ----------------------------------------
+        // ------------------------------------------------
+        // Global Response Hook (optional override)
+        // ------------------------------------------------
+
+        protected virtual void OnAnyResponse(ApiResponse response) { }
+
+        // ------------------------------------------------
         // Override these in derived classes
-        // ----------------------------------------
+        // ------------------------------------------------
 
         protected virtual void OnSuccess(string json) { }
 

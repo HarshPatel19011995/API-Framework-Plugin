@@ -1,8 +1,8 @@
 {
   "name": "com.mayamystic.apiframework",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "displayName": "MayaMystic API Framework",
-  "description": "Enterprise-grade middleware-based API networking framework for Unity. Includes middleware pipeline, authentication injection, smart retry strategies, endpoint resolution, and strongly typed JSON serialization.",
+  "description": "Enterprise-grade middleware-based API networking framework for Unity. Provides a modular middleware pipeline with authentication injection, retry strategies, request logging, and flexible request body handling.",
   "unity": "2021.3",
 
   "icon": "icon.png",
@@ -35,7 +35,7 @@
   "samples": [
     {
       "displayName": "Basic Usage",
-      "description": "Example showing how to use ApiManager, middleware pipeline, and ApiHandlerBase.",
+      "description": "Example demonstrating ApiManager setup, middleware registration, and executing API requests.",
       "path": "Samples~/BasicUsage"
     }
   ],

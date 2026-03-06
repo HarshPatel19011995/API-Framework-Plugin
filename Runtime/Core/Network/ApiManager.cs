@@ -1,92 +1,178 @@
 /**************************************************************************
+ * 
  *  Project     : MayaMystic API Framework
+ *  File        : ApiRequestParams.cs
  *  Author      : Harsh Patel
  *  Company     : MayaMystic
+ *  Version     : 1.1.0
  * 
  *  Description :
- *  Centralized async API manager using middleware pipeline.
- *  Handles request tracking and cancellation.
+ *  Encapsulates all necessary parameters for an API request.
+ *  Unity equivalent of Unreal's FApiRequestParams.
+ * 
  **************************************************************************/
 
-using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using MayaMystic.ApiFramework.Core.Middleware;
+using System.Text;
 
 namespace MayaMystic.ApiFramework.Core.Network
 {
-    public class ApiManager
+    public class ApiRequestParams
     {
-        private static readonly HttpClient httpClient = new();
-        private readonly ConcurrentDictionary<string, CancellationTokenSource> activeRequests = new();
+        // -------------------------
+        // Request Info
+        // -------------------------
 
-        private readonly ApiMiddlewarePipeline pipeline = new();
+        public string Url { get; set; }
+
+        public HttpVerb Verb { get; set; } = HttpVerb.GET;
+
+        public ApiBodyType BodyType { get; set; } = ApiBodyType.None;
+
+        // -------------------------
+        // Authorization
+        // -------------------------
+
+        public string AuthToken { get; set; }
+
+        // -------------------------
+        // Body
+        // -------------------------
+
+        public string JsonContent { get; set; }
+
+        public Dictionary<string, string> FormFields { get; } = new();
+
+        public byte[] MultipartBody { get; set; }
+
+        public string MultipartBoundary { get; set; }
+
+        // -------------------------
+        // Headers
+        // -------------------------
+
+        public Dictionary<string, string> AdditionalHeaders { get; } = new();
+
+        // -------------------------
+        // Request Settings
+        // -------------------------
+
+        public int TimeoutSeconds { get; set; } = 10;
+
+        public int MaxRetries { get; set; } = 3;
+
+        public int RetryDelayMilliseconds { get; set; } = 5000;
+
+        internal int CurrentRetryAttempt = 0;
+
+        // -------------------------
+        // Constructors
+        // -------------------------
+
+        public ApiRequestParams() { }
+
+        public ApiRequestParams(string url, HttpVerb verb = HttpVerb.GET)
+        {
+            Url = url;
+            Verb = verb;
+        }
+
+        // -------------------------
+        // Helper Methods
+        // -------------------------
+
+        public void AddHeader(string key, string value)
+        {
+            AdditionalHeaders[key] = value;
+        }
+
+        public void AddFormField(string key, string value)
+        {
+            FormFields[key] = value;
+        }
+
+        public void SetJsonBody(string json)
+        {
+            BodyType = ApiBodyType.Json;
+            JsonContent = json;
+        }
+
+        // -------------------------
+        // Build Request
+        // -------------------------
 
         /// <summary>
-        /// Register middleware into pipeline.
+        /// Builds HttpRequestMessage based on parameters.
+        /// Equivalent to Unreal ApplyToRequest().
         /// </summary>
-        public void UseMiddleware(IApiMiddleware middleware)
+        public HttpRequestMessage BuildHttpRequestMessage()
         {
-            pipeline.Use(middleware);
-        }
+            var request = new HttpRequestMessage(
+                new HttpMethod(Verb.ToString()),
+                Url
+            );
 
-        public async Task<ApiResponse> SendAsync(ApiRequestParams requestParams)
-        {
-            string requestId = Guid.NewGuid().ToString();
-            var cts = new CancellationTokenSource(
-                TimeSpan.FromSeconds(requestParams.TimeoutSeconds));
+            // Authorization
 
-            activeRequests.TryAdd(requestId, cts);
-
-            try
+            if (!string.IsNullOrEmpty(AuthToken))
             {
-                // Terminal delegate (actual HTTP execution)
-                MiddlewareDelegate terminal = async (req) =>
-                {
-                    try
-                    {
-                        var requestMessage = req.BuildHttpRequestMessage();
-                        var response = await httpClient.SendAsync(requestMessage, cts.Token);
-                        var body = await response.Content.ReadAsStringAsync();
-
-                        return new ApiResponse(
-                            response.IsSuccessStatusCode,
-                            (int)response.StatusCode,
-                            body,
-                            response.IsSuccessStatusCode ? null : response.ReasonPhrase
-                        );
-                    }
-                    catch (TaskCanceledException)
-                    {
-                        return new ApiResponse(false, 408, null, "Request Timeout");
-                    }
-                    catch (Exception ex)
-                    {
-                        return new ApiResponse(false, 500, null, ex.Message);
-                    }
-                };
-
-                var pipelineDelegate = pipeline.Build(terminal);
-
-                return await pipelineDelegate(requestParams);
-            }
-            finally
-            {
-                activeRequests.TryRemove(requestId, out _);
-                cts.Dispose();
-            }
-        }
-
-        public void CancelAllRequests()
-        {
-            foreach (var pair in activeRequests)
-            {
-                pair.Value.Cancel();
+                request.Headers.TryAddWithoutValidation(
+                    "Authorization",
+                    $"Bearer {AuthToken}"
+                );
             }
 
-            activeRequests.Clear();
+            // Additional headers
+
+            foreach (var header in AdditionalHeaders)
+            {
+                request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+            }
+
+            // GET requests usually have no body
+
+            if (Verb == HttpVerb.GET)
+                return request;
+
+            // Body handling
+
+            switch (BodyType)
+            {
+                case ApiBodyType.Json:
+
+                    request.Content = new StringContent(
+                        JsonContent ?? "",
+                        Encoding.UTF8,
+                        "application/json"
+                    );
+
+                    break;
+
+                case ApiBodyType.FormUrlEncoded:
+
+                    request.Content = new FormUrlEncodedContent(FormFields);
+
+                    break;
+
+                case ApiBodyType.Multipart:
+
+                    MultipartBoundary ??= "----MayaMysticBoundary";
+
+                    var multipartContent = new MultipartFormDataContent(MultipartBoundary);
+
+                    if (MultipartBody != null)
+                    {
+                        var fileContent = new ByteArrayContent(MultipartBody);
+                        multipartContent.Add(fileContent, "file", "upload.bin");
+                    }
+
+                    request.Content = multipartContent;
+
+                    break;
+            }
+
+            return request;
         }
     }
 }

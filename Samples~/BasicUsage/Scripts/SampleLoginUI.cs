@@ -20,7 +20,8 @@ namespace MayaMystic.ApiFramework.Samples
                 apiManager,
                 ApiConfig,
                 "1234",
-                "9999"
+                "9999",
+                "test@example.com"
             );
 
             await handler.ExecuteAsync();

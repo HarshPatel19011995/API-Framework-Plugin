@@ -1,3 +1,27 @@
+/**************************************************************************
+ * 
+ *  Project     : MayaMystic API Framework
+ *  File        : LoggingMiddleware.cs
+ *  Author      : Harsh Patel
+ *  Company     : MayaMystic
+ *  Version     : 1.1.0
+ *  Created     : 2026-03-06
+ *  Last Updated: 2026-03-06
+ * 
+ *  Description :
+ *  Middleware responsible for logging API requests and responses.
+ *  Supports optional logging of request and response bodies for
+ *  debugging and development.
+ * 
+ *  Documentation :
+ *  https://harshpatel19011995.github.io/API-Framework-Plugin/Documentation~/
+ * 
+ *  License :
+ *  https://github.com/HarshPatel19011995/API-Framework-Plugin/blob/main/LICENSE.md
+ * 
+ *  Copyright (c) MayaMystic. All rights reserved.
+ * 
+ **************************************************************************/
 using System.Threading.Tasks;
 using UnityEngine;
 using MayaMystic.ApiFramework.Core.Network;

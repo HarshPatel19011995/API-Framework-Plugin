@@ -5,23 +5,37 @@ All notable changes to **MayaMystic API Framework** are documented in this file.
 This project follows a structured changelog format to track improvements and new features across releases.
 
 ---
+
+## [1.3.0] - 2026-03-06
+
+### ✨ Added
+- Support for multiple request body types via `ApiBodyType`
+- `application/x-www-form-urlencoded` request support
+- `FormFields` dictionary in `ApiRequestParams`
+- `AddFormField()` helper method
+
+### 🚀 Improved
+- Refactored request body handling logic in `ApiRequestParams`
+- Improved `LoggingMiddleware` to support new body types
+- Updated sample request handler demonstrating JSON, FormUrlEncoded, and Multipart requests
+
+### 🐛 Fixed
+- Fixed HTTP 400 errors when calling APIs expecting form-urlencoded request bodies
+
+---
+
 ## [1.2.0] - 2026-03-05
 
-### Added
-- Introduced `ApiBodyType` enum for flexible request body handling.
-- Added support for `application/x-www-form-urlencoded` requests.
-- Added `FormFields` dictionary in `ApiRequestParams`.
-- Added `AddFormField()` helper method.
+### ✨ Added
+- `ApiBodyType` enum for flexible request body handling
+- Multipart request support
+- Multipart binary upload support
 
-### Improved
-- Cleaner request body handling logic.
-- Updated SampleLoginHandler to demonstrate:
-  - FormUrlEncoded
-  - JSON
-  - Multipart request examples.
+### 🚀 Improved
+- Enhanced request building logic
+- Cleaner internal request parameter handling
 
-### Fixed
-- Resolved 400 errors when calling APIs expecting form-urlencoded bodies.
+---
 
 ## [1.1.0] - 2026-03-02
 

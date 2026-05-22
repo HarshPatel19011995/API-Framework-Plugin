@@ -4,11 +4,6 @@
  *  File        : ApiRequestParams.cs
  *  Author      : Harsh Patel
  *  Company     : MayaMystic
- *  Version     : 1.1.0
- * 
- *  Description :
- *  Encapsulates all necessary parameters for an API request.
- *  Unity equivalent of Unreal's FApiRequestParams.
  * 
  **************************************************************************/
 
@@ -20,55 +15,92 @@ namespace MayaMystic.ApiFramework.Core.Network
 {
     public class ApiRequestParams
     {
-        // URL
-        public string Url;
+        // ------------------------------------------------
+        // Request
+        // ------------------------------------------------
 
-        // HTTP Verb
-        public HttpVerb Verb = HttpVerb.GET;
+        public string Url { get; set; }
 
-        // Body type
-        public ApiBodyType BodyType = ApiBodyType.None;
+        public HttpVerb Verb { get; set; } = HttpVerb.GET;
 
-        // Bearer token
-        public string AuthToken;
+        public ApiBodyType BodyType { get; set; } = ApiBodyType.None;
 
-        // JSON body
-        public string JsonContent;
+        // ------------------------------------------------
+        // Auth
+        // ------------------------------------------------
 
-        // Form fields
-        public Dictionary<string, string> FormFields = new();
+        public string AuthToken { get; set; }
 
-        // Multipart binary body
-        public byte[] MultipartBody;
+        // ------------------------------------------------
+        // Body
+        // ------------------------------------------------
 
-        // Multipart boundary
-        public string MultipartBoundary;
+        public string JsonContent { get; set; }
 
-        // Additional headers
-        public Dictionary<string, string> AdditionalHeaders = new();
+        public Dictionary<string, string> FormFields { get; }
+            = new();
 
-        // Timeout
-        public int TimeoutSeconds = 10;
+        public byte[] MultipartBody { get; set; }
 
-        // Retry
-        public int MaxRetries = 3;
-        public int RetryDelayMilliseconds = 5000;
+        public string MultipartBoundary { get; set; }
 
-        // Internal retry tracking
+        // ------------------------------------------------
+        // Headers
+        // ------------------------------------------------
+
+        public Dictionary<string, string> AdditionalHeaders { get; }
+            = new();
+
+        // ------------------------------------------------
+        // Retry / Timeout
+        // ------------------------------------------------
+
+        public int TimeoutSeconds { get; set; } = 10;
+
+        public int MaxRetries { get; set; } = 3;
+
+        public int RetryDelayMilliseconds { get; set; } = 500;
+
         internal int CurrentRetryAttempt = 0;
 
-        /// <summary>
-        /// Helper to add form field
-        /// </summary>
+        // ------------------------------------------------
+        // Constructors
+        // ------------------------------------------------
+
+        public ApiRequestParams() { }
+
+        public ApiRequestParams(
+            string url,
+            HttpVerb verb = HttpVerb.GET)
+        {
+            Url = url;
+            Verb = verb;
+        }
+
+        // ------------------------------------------------
+        // Helper Methods
+        // ------------------------------------------------
+
+        public void AddHeader(string key, string value)
+        {
+            AdditionalHeaders[key] = value;
+        }
+
         public void AddFormField(string key, string value)
         {
             FormFields[key] = value;
         }
 
-        /// <summary>
-        /// Builds HttpRequestMessage based on parameters.
-        /// Equivalent to Unreal ApplyToRequest().
-        /// </summary>
+        public void SetJsonBody(string json)
+        {
+            BodyType = ApiBodyType.Json;
+            JsonContent = json;
+        }
+
+        // ------------------------------------------------
+        // Build Request
+        // ------------------------------------------------
+
         public HttpRequestMessage BuildHttpRequestMessage()
         {
             var request = new HttpRequestMessage(
@@ -76,9 +108,7 @@ namespace MayaMystic.ApiFramework.Core.Network
                 Url
             );
 
-            // -------------------------
             // Authorization
-            // -------------------------
 
             if (!string.IsNullOrEmpty(AuthToken))
             {
@@ -88,18 +118,22 @@ namespace MayaMystic.ApiFramework.Core.Network
                 );
             }
 
-            // Additional headers
+            // Additional Headers
+
             foreach (var header in AdditionalHeaders)
             {
-                request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                request.Headers.TryAddWithoutValidation(
+                    header.Key,
+                    header.Value
+                );
             }
 
-            // -------------------------
-            // Body Handling
-            // -------------------------
+            // GET usually no body
 
             if (Verb == HttpVerb.GET)
                 return request;
+
+            // Body Handling
 
             switch (BodyType)
             {
@@ -115,23 +149,33 @@ namespace MayaMystic.ApiFramework.Core.Network
 
                 case ApiBodyType.FormUrlEncoded:
 
-                    request.Content = new FormUrlEncodedContent(FormFields);
+                    request.Content =
+                        new FormUrlEncodedContent(FormFields);
 
                     break;
 
                 case ApiBodyType.Multipart:
 
-                    MultipartBoundary ??= "----MayaMysticBoundary";
+                    MultipartBoundary ??=
+                        "----MayaMysticBoundary";
 
-                    var content = new MultipartFormDataContent(MultipartBoundary);
+                    var multipartContent =
+                        new MultipartFormDataContent(
+                            MultipartBoundary);
 
                     if (MultipartBody != null)
                     {
-                        var fileContent = new ByteArrayContent(MultipartBody);
-                        content.Add(fileContent, "file", "upload.bin");
+                        var fileContent =
+                            new ByteArrayContent(MultipartBody);
+
+                        multipartContent.Add(
+                            fileContent,
+                            "file",
+                            "upload.bin"
+                        );
                     }
 
-                    request.Content = content;
+                    request.Content = multipartContent;
 
                     break;
             }

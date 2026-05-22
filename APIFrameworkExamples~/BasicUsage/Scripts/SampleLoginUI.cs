@@ -1,6 +1,7 @@
-using UnityEngine;
+using MayaMystic.ApiFramework.Core.Managers;
+using MayaMystic.ApiFramework.Core.Middleware;
 using MayaMystic.ApiFramework.Core.Network;
-
+using UnityEngine;
 namespace MayaMystic.ApiFramework.Samples
 {
     public class SampleLoginUI : MonoBehaviour
@@ -11,16 +12,24 @@ namespace MayaMystic.ApiFramework.Samples
 
         private void Awake()
         {
-            apiManager = new ApiManager();
-        }
+			apiManager = new ApiManager();
 
-        public async void OnLoginClicked()
+			apiManager.UseMiddleware(
+				new SmartRetryMiddleware(
+					maxRetries: 3,
+					baseDelayMs: 1000
+				)
+			);
+		}
+        
+        [ContextMenu("Login")]
+		public async void OnLoginClicked()
         {
             var handler = new SampleLoginHandler(
                 apiManager,
                 ApiConfig,
+                "666",
                 "1234",
-                "9999",
                 "test@example.com"
             );
 

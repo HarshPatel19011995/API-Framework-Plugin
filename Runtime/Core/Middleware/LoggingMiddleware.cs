@@ -55,7 +55,7 @@ namespace MayaMystic.ApiFramework.Core.Middleware
 
                 if (requestParams.BodyType == ApiBodyType.Json)
                 {
-                    bodyContent = requestParams.JsonBody;
+                    bodyContent = requestParams.JsonContent;
                 }
                 else if (requestParams.BodyType == ApiBodyType.FormUrlEncoded &&
                          requestParams.FormFields != null)

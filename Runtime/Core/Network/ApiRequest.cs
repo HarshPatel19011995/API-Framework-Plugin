@@ -4,7 +4,7 @@
  *  File        : ApiRequest.cs
  *  Author      : Harsh Patel
  *  Company     : MayaMystic
- *  Version     : 1.1.0
+ *  Version     : 1.2.0
  * 
  *  Description :
  *  Fluent request builder for creating API requests easily.
@@ -14,25 +14,49 @@
 
 using System.Threading.Tasks;
 using MayaMystic.ApiFramework.Core.Network;
+using MayaMystic.ApiFramework.Core.Managers;
 
 namespace MayaMystic.ApiFramework
 {
     public class ApiRequest
     {
+        // ------------------------------------------------
+        // Variables
+        // ------------------------------------------------
+
         private readonly ApiRequestParams requestParams;
 
-        private ApiRequest(string url)
+        private readonly ApiManager apiManager;
+
+        // ------------------------------------------------
+        // Constructor
+        // ------------------------------------------------
+
+        private ApiRequest(
+            string url,
+            ApiManager apiManager)
         {
             requestParams = new ApiRequestParams(url);
+            this.apiManager = apiManager;
         }
+
+        // ------------------------------------------------
+        // Factory
+        // ------------------------------------------------
 
         /// <summary>
         /// Creates a new API request builder.
         /// </summary>
-        public static ApiRequest Create(string url)
+        public static ApiRequest Create(
+            string url,
+            ApiManager apiManager)
         {
-            return new ApiRequest(url);
+            return new ApiRequest(url, apiManager);
         }
+
+        // ------------------------------------------------
+        // HTTP Methods
+        // ------------------------------------------------
 
         public ApiRequest Get()
         {
@@ -57,6 +81,10 @@ namespace MayaMystic.ApiFramework
             requestParams.Verb = HttpVerb.DELETE;
             return this;
         }
+
+        // ------------------------------------------------
+        // Request Configuration
+        // ------------------------------------------------
 
         public ApiRequest WithAuth(string token)
         {
@@ -90,19 +118,25 @@ namespace MayaMystic.ApiFramework
             return this;
         }
 
-        public ApiRequest WithRetry(int maxRetries, int delayMs)
+        public ApiRequest WithRetry(
+            int maxRetries,
+            int delayMs)
         {
             requestParams.MaxRetries = maxRetries;
             requestParams.RetryDelayMilliseconds = delayMs;
             return this;
         }
 
+        // ------------------------------------------------
+        // Send Request
+        // ------------------------------------------------
+
         /// <summary>
         /// Sends the request using ApiManager.
         /// </summary>
         public Task<ApiResponse> SendAsync()
         {
-            return ApiManager.SendAsync(requestParams);
+            return apiManager.SendAsync(requestParams);
         }
     }
 }

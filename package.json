@@ -1,8 +1,9 @@
+```json id="jlwmk2"
 {
   "name": "com.mayamystic.apiframework",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "displayName": "MayaMystic API Framework",
-  "description": "Enterprise-grade middleware-based API networking framework for Unity. Provides a modular middleware pipeline with authentication injection, retry strategies, request logging, and flexible request body handling.",
+  "description": "Enterprise-grade middleware-based API networking framework for Unity. Provides a modular middleware pipeline with authentication injection, retry strategies, request logging, token providers, endpoint resolvers, and flexible request body handling including JSON, multipart, and form-urlencoded requests.",
   "unity": "2021.3",
 
   "icon": "icon.png",
@@ -21,7 +22,11 @@
     "json",
     "sdk",
     "middleware",
-    "unity"
+    "unity",
+    "authentication",
+    "retry",
+    "multipart",
+    "upload"
   ],
 
   "license": "Proprietary",
@@ -35,8 +40,23 @@
   "samples": [
     {
       "displayName": "Basic Usage",
-      "description": "Example demonstrating ApiManager setup, middleware registration, and executing API requests.",
-      "path": "Samples~/BasicUsage"
+      "description": "Demonstrates ApiManager setup, middleware registration, logging, retry handling, and executing API requests.",
+      "path": "APIFrameworkExamples~/BasicUsage"
+    },
+    {
+      "displayName": "Login System",
+      "description": "Demonstrates login API flow using ApiHandlerBase, endpoint resolvers, token providers, and form-urlencoded requests.",
+      "path": "APIFrameworkExamples~/Login"
+    },
+    {
+      "displayName": "Retry Middleware",
+      "description": "Demonstrates smart retry middleware with exponential backoff and retry logging.",
+      "path": "APIFrameworkExamples~/Retry"
+    },
+    {
+      "displayName": "Multipart Upload",
+      "description": "Demonstrates multipart/form-data requests including file uploads and form fields.",
+      "path": "APIFrameworkExamples~/Upload"
     }
   ],
 
@@ -51,3 +71,4 @@
 
   "homepage": "https://github.com/HarshPatel19011995/API-Framework-Plugin"
 }
+```

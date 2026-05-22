@@ -8,13 +8,26 @@ namespace MayaMystic.ApiFramework.Samples
     /// </summary>
     public class SampleStaticTokenProvider : ITokenProvider
     {
-        private readonly string token;
+        private string token;
 
         public SampleStaticTokenProvider(string token)
         {
             this.token = token;
         }
 
-        public string GetToken() => token;
+        public string GetToken()
+        {
+            return token;
+        }
+
+        public void SetToken(string newToken)
+        {
+            token = newToken;
+        }
+
+        public void ClearToken()
+        {
+            token = string.Empty;
+        }
     }
 }

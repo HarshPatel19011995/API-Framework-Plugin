@@ -1,178 +1,123 @@
 /**************************************************************************
  * 
  *  Project     : MayaMystic API Framework
- *  File        : ApiRequestParams.cs
+ *  File        : ApiManager.cs
  *  Author      : Harsh Patel
  *  Company     : MayaMystic
- *  Version     : 1.1.0
- * 
- *  Description :
- *  Encapsulates all necessary parameters for an API request.
- *  Unity equivalent of Unreal's FApiRequestParams.
  * 
  **************************************************************************/
 
-using System.Collections.Generic;
+using System;
 using System.Net.Http;
-using System.Text;
+using System.Threading.Tasks;
+using MayaMystic.ApiFramework.Core.Network;
+using MayaMystic.ApiFramework.Core.Middleware;
 
-namespace MayaMystic.ApiFramework.Core.Network
+namespace MayaMystic.ApiFramework.Core.Managers
 {
-    public class ApiRequestParams
+    public class ApiManager
     {
-        // -------------------------
-        // Request Info
-        // -------------------------
+        // ------------------------------------------------
+        // Variables
+        // ------------------------------------------------
 
-        public string Url { get; set; }
+        private readonly HttpClient httpClient;
 
-        public HttpVerb Verb { get; set; } = HttpVerb.GET;
+        private readonly ApiMiddlewarePipeline middlewarePipeline;
 
-        public ApiBodyType BodyType { get; set; } = ApiBodyType.None;
+        // ------------------------------------------------
+        // Constructor
+        // ------------------------------------------------
 
-        // -------------------------
-        // Authorization
-        // -------------------------
-
-        public string AuthToken { get; set; }
-
-        // -------------------------
-        // Body
-        // -------------------------
-
-        public string JsonContent { get; set; }
-
-        public Dictionary<string, string> FormFields { get; } = new();
-
-        public byte[] MultipartBody { get; set; }
-
-        public string MultipartBoundary { get; set; }
-
-        // -------------------------
-        // Headers
-        // -------------------------
-
-        public Dictionary<string, string> AdditionalHeaders { get; } = new();
-
-        // -------------------------
-        // Request Settings
-        // -------------------------
-
-        public int TimeoutSeconds { get; set; } = 10;
-
-        public int MaxRetries { get; set; } = 3;
-
-        public int RetryDelayMilliseconds { get; set; } = 5000;
-
-        internal int CurrentRetryAttempt = 0;
-
-        // -------------------------
-        // Constructors
-        // -------------------------
-
-        public ApiRequestParams() { }
-
-        public ApiRequestParams(string url, HttpVerb verb = HttpVerb.GET)
+        public ApiManager()
         {
-            Url = url;
-            Verb = verb;
+            httpClient = new HttpClient();
+
+            middlewarePipeline = new ApiMiddlewarePipeline();
         }
 
-        // -------------------------
-        // Helper Methods
-        // -------------------------
+        // ------------------------------------------------
+        // Middleware
+        // ------------------------------------------------
 
-        public void AddHeader(string key, string value)
+        public void UseMiddleware(IApiMiddleware middleware)
         {
-            AdditionalHeaders[key] = value;
+            middlewarePipeline.Use(middleware);
         }
 
-        public void AddFormField(string key, string value)
+        // ------------------------------------------------
+        // Send Request
+        // ------------------------------------------------
+
+        public async Task<ApiResponse> SendAsync(
+            ApiRequestParams requestParams)
         {
-            FormFields[key] = value;
-        }
-
-        public void SetJsonBody(string json)
-        {
-            BodyType = ApiBodyType.Json;
-            JsonContent = json;
-        }
-
-        // -------------------------
-        // Build Request
-        // -------------------------
-
-        /// <summary>
-        /// Builds HttpRequestMessage based on parameters.
-        /// Equivalent to Unreal ApplyToRequest().
-        /// </summary>
-        public HttpRequestMessage BuildHttpRequestMessage()
-        {
-            var request = new HttpRequestMessage(
-                new HttpMethod(Verb.ToString()),
-                Url
-            );
-
-            // Authorization
-
-            if (!string.IsNullOrEmpty(AuthToken))
+            try
             {
-                request.Headers.TryAddWithoutValidation(
-                    "Authorization",
-                    $"Bearer {AuthToken}"
+                MiddlewareDelegate terminalDelegate =
+                    ExecuteHttpRequestAsync;
+
+                var pipeline =
+                    middlewarePipeline.Build(terminalDelegate);
+
+                return await pipeline(requestParams);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse(
+                    false,
+                    500,
+                    null,
+                    ex.Message
                 );
             }
+        }
 
-            // Additional headers
+        // ------------------------------------------------
+        // HTTP Execution
+        // ------------------------------------------------
 
-            foreach (var header in AdditionalHeaders)
+        private async Task<ApiResponse> ExecuteHttpRequestAsync(
+            ApiRequestParams requestParams)
+        {
+            try
             {
-                request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                using var request =
+                    requestParams.BuildHttpRequestMessage();
+
+                using var response =
+                    await httpClient.SendAsync(request);
+
+                var body =
+                    await response.Content.ReadAsStringAsync();
+
+                return new ApiResponse(
+                    response.IsSuccessStatusCode,
+                    (int)response.StatusCode,
+                    body,
+                    response.IsSuccessStatusCode
+                        ? null
+                        : response.ReasonPhrase
+                );
             }
-
-            // GET requests usually have no body
-
-            if (Verb == HttpVerb.GET)
-                return request;
-
-            // Body handling
-
-            switch (BodyType)
+            catch (TaskCanceledException)
             {
-                case ApiBodyType.Json:
-
-                    request.Content = new StringContent(
-                        JsonContent ?? "",
-                        Encoding.UTF8,
-                        "application/json"
-                    );
-
-                    break;
-
-                case ApiBodyType.FormUrlEncoded:
-
-                    request.Content = new FormUrlEncodedContent(FormFields);
-
-                    break;
-
-                case ApiBodyType.Multipart:
-
-                    MultipartBoundary ??= "----MayaMysticBoundary";
-
-                    var multipartContent = new MultipartFormDataContent(MultipartBoundary);
-
-                    if (MultipartBody != null)
-                    {
-                        var fileContent = new ByteArrayContent(MultipartBody);
-                        multipartContent.Add(fileContent, "file", "upload.bin");
-                    }
-
-                    request.Content = multipartContent;
-
-                    break;
+                return new ApiResponse(
+                    false,
+                    408,
+                    null,
+                    "Request Timeout"
+                );
             }
-
-            return request;
+            catch (Exception ex)
+            {
+                return new ApiResponse(
+                    false,
+                    500,
+                    null,
+                    ex.Message
+                );
+            }
         }
     }
 }

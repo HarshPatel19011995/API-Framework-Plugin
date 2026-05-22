@@ -1,6 +1,7 @@
 using UnityEngine;
 using MayaMystic.ApiFramework.Core.Network;
 using MayaMystic.ApiFramework.Core.Middleware;
+using MayaMystic.ApiFramework.Core.Managers;
 
 namespace MayaMystic.ApiFramework.Samples
 {

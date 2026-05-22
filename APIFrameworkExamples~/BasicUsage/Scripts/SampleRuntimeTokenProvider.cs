@@ -15,6 +15,14 @@ namespace MayaMystic.ApiFramework.Samples
             token = newToken;
         }
 
-        public string GetToken() => token;
+        public string GetToken()
+        {
+            return token;
+        }
+
+        public void ClearToken()
+        {
+            token = string.Empty;
+        }
     }
 }

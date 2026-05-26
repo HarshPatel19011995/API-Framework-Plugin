@@ -4,14 +4,21 @@
  *  File        : LoggingMiddleware.cs
  *  Author      : Harsh Patel
  *  Company     : MayaMystic
- *  Version     : 1.1.0
+ *  Version     : 1.3.0
  *  Created     : 2026-03-06
- *  Last Updated: 2026-03-06
+ *  Last Updated: 2026-05-23
  * 
  *  Description :
  *  Middleware responsible for logging API requests and responses.
- *  Supports optional logging of request and response bodies for
- *  debugging and development.
+ * 
+ *  Features :
+ *  - Request logging
+ *  - Response logging
+ *  - Request body logging
+ *  - Response body logging
+ *  - Execution time tracking
+ *  - Development build filtering
+ *  - Doxygen documentation support
  * 
  *  Documentation :
  *  https://harshpatel19011995.github.io/API-Framework-Plugin/Documentation~/
@@ -22,68 +29,197 @@
  *  Copyright (c) MayaMystic. All rights reserved.
  * 
  **************************************************************************/
+
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
-using UnityEngine;
 using MayaMystic.ApiFramework.Core.Network;
+using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace MayaMystic.ApiFramework.Core.Middleware
 {
+    /// <summary>
+    /// Middleware responsible for API request and response logging.
+    /// </summary>
+    /// <remarks>
+    /// Provides:
+    /// - Request logging
+    /// - Response logging
+    /// - Body inspection
+    /// - Request timing
+    /// 
+    /// Logging automatically runs only in:
+    /// - Unity Editor
+    /// - Development Builds
+    /// 
+    /// Prevents unnecessary logs in production builds.
+    /// </remarks>
     public class LoggingMiddleware : IApiMiddleware
     {
+        #region Private Variables
+
+        /// <summary>
+        /// Should request body be logged.
+        /// </summary>
         private readonly bool logRequestBody;
+
+        /// <summary>
+        /// Should response body be logged.
+        /// </summary>
         private readonly bool logResponseBody;
 
-        public LoggingMiddleware(bool logRequestBody = false,
-                                 bool logResponseBody = false)
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="LoggingMiddleware"/> class.
+        /// </summary>
+        /// <param name="logRequestBody">
+        /// Enables request body logging.
+        /// </param>
+        /// <param name="logResponseBody">
+        /// Enables response body logging.
+        /// </param>
+        public LoggingMiddleware(
+            bool logRequestBody = false,
+            bool logResponseBody = false)
         {
             this.logRequestBody = logRequestBody;
             this.logResponseBody = logResponseBody;
         }
 
+        #endregion
+
+        #region Middleware Execution
+
+        /// <summary>
+        /// Executes middleware logging pipeline.
+        /// </summary>
+        /// <param name="requestParams">
+        /// API request parameters.
+        /// </param>
+        /// <param name="next">
+        /// Next middleware delegate.
+        /// </param>
+        /// <returns>
+        /// API response result.
+        /// </returns>
         public async Task<ApiResponse> InvokeAsync(
             ApiRequestParams requestParams,
             MiddlewareDelegate next)
         {
-            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
 
-            Debug.Log($"[API REQUEST] {requestParams.Verb} {requestParams.Url}");
+            Stopwatch stopwatch =
+                Stopwatch.StartNew();
 
-            // Updated body logging
+            // ------------------------------------------------
+            // Request Log
+            // ------------------------------------------------
+
+            Debug.Log(
+                $"[API REQUEST] " +
+                $"{requestParams.Verb} " +
+                $"{requestParams.Url}");
+
+            // ------------------------------------------------
+            // Request Body
+            // ------------------------------------------------
+
             if (logRequestBody)
             {
-                string bodyContent = null;
+                string requestBody =
+                    BuildRequestBodyLog(requestParams);
 
-                if (requestParams.BodyType == ApiBodyType.Json)
+                if (!string.IsNullOrWhiteSpace(requestBody))
                 {
-                    bodyContent = requestParams.JsonContent;
-                }
-                else if (requestParams.BodyType == ApiBodyType.FormUrlEncoded &&
-                         requestParams.FormFields != null)
-                {
-                    bodyContent = string.Join("&",
-                        System.Linq.Enumerable.Select(
-                            requestParams.FormFields,
-                            kv => $"{kv.Key}={kv.Value}"));
-                }
-
-                if (!string.IsNullOrEmpty(bodyContent))
-                {
-                    Debug.Log($"[API REQUEST BODY] {bodyContent}");
+                    Debug.Log(
+                        $"[API REQUEST BODY]\n{requestBody}");
                 }
             }
 
-            var response = await next(requestParams);
+            // ------------------------------------------------
+            // Execute Next Middleware
+            // ------------------------------------------------
+
+            ApiResponse response =
+                await next(requestParams);
 
             stopwatch.Stop();
 
-            Debug.Log($"[API RESPONSE] {response.StatusCode} ({stopwatch.ElapsedMilliseconds} ms)");
+            // ------------------------------------------------
+            // Response Log
+            // ------------------------------------------------
 
-            if (logResponseBody && !string.IsNullOrEmpty(response.Body))
+            Debug.Log(
+                $"[API RESPONSE] " +
+                $"Status: {response.StatusCode} | " +
+                $"Time: {stopwatch.ElapsedMilliseconds} ms");
+
+            // ------------------------------------------------
+            // Response Body
+            // ------------------------------------------------
+
+            if (logResponseBody &&
+                !string.IsNullOrWhiteSpace(response.ResponseBody))
             {
-                Debug.Log($"[API RESPONSE BODY] {response.Body}");
+                Debug.Log(
+                    $"[API RESPONSE BODY]\n" +
+                    $"{response.ResponseBody}");
             }
 
             return response;
+
+#else
+            return await next(requestParams);
+#endif
         }
+
+        #endregion
+
+        #region Private Helpers
+
+        /// <summary>
+        /// Builds formatted request body log string.
+        /// </summary>
+        /// <param name="requestParams">
+        /// Request parameter container.
+        /// </param>
+        /// <returns>
+        /// Formatted request body string.
+        /// </returns>
+        private string BuildRequestBodyLog(
+            ApiRequestParams requestParams)
+        {
+            switch (requestParams.BodyType)
+            {
+                case ApiBodyType.Json:
+
+                    return requestParams.JsonContent;
+
+                case ApiBodyType.FormUrlEncoded:
+
+                    if (requestParams.FormFields == null)
+                        return null;
+
+                    return string.Join(
+                        "&",
+                        requestParams.FormFields.Select(
+                            kv => $"{kv.Key}={kv.Value}"));
+
+                case ApiBodyType.Multipart:
+
+                    return "[MULTIPART DATA]";
+
+                default:
+
+                    return null;
+            }
+        }
+
+        #endregion
     }
 }

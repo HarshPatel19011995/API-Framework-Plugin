@@ -1,140 +1,158 @@
-using MayaMystic.ApiFramework.Core.Base;
+/**************************************************************************
+ * 
+ *  Project     : MayaMystic API Framework
+ *  File        : SampleLoginHandler.cs
+ *  Author      : Harsh Patel
+ *  Company     : MayaMystic
+ *  Version     : 1.4.0
+ * 
+ *  Description :
+ *  Sample login API handler demonstrating:
+ * 
+ *  - Fluent request builder usage
+ *  - Typed API responses
+ *  - JSON serialization
+ *  - Login request handling
+ *  - Framework middleware usage
+ * 
+ *  Copyright © 2026 MayaMystic. All Rights Reserved.
+ * 
+ **************************************************************************/
+
+using System.Threading.Tasks;
+using MayaMystic.ApiFramework.Core.Managers;
 using MayaMystic.ApiFramework.Core.Network;
 using MayaMystic.ApiFramework.Core.Utilities;
-using MayaMystic.ApiFramework.Core.Interfaces;
-using MayaMystic.ApiFramework.Core.Managers;
-using UnityEngine;
 
-namespace MayaMystic.ApiFramework.Samples
+namespace MayaMystic.ApiFramework.Samples.BasicUsage
 {
-    public class SampleLoginHandler : ApiHandlerBase
+    /// <summary>
+    /// Sample login API handler.
+    /// </summary>
+    /// <remarks>
+    /// Demonstrates:
+    /// - Request creation
+    /// - JSON serialization
+    /// - Typed API responses
+    /// - Login request flow
+    /// </remarks>
+    public class SampleLoginHandler
     {
-        private readonly IApiEndpointResolver resolver;
-        private readonly string userId;
-        private readonly string pin;
-        private readonly string email;
+        #region Private Variables
 
+        /// <summary>
+        /// Framework API manager instance.
+        /// </summary>
+        private readonly ApiManager apiManager;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="SampleLoginHandler"/> class.
+        /// </summary>
+        /// <param name="apiManager">
+        /// Framework API manager instance.
+        /// </param>
         public SampleLoginHandler(
-            ApiManager manager,
-            IApiEndpointResolver resolver,
-            string userId,
-            string pin,
-            string email)
-            : base(manager)
+            ApiManager apiManager)
         {
-            this.resolver = resolver;
-            this.userId = userId;
-            this.pin = pin;
-            this.email = email;
+            this.apiManager = apiManager;
         }
 
-		//protected override ApiRequestParams BuildRequestParams()
-		//{
-		//    // ------------------------------------------------
-		//    // OPTION 1 : FORM URL ENCODED (Most Login APIs)
-		//    // ------------------------------------------------
+        #endregion
 
-		//    var request = new ApiRequestParams
-		//    {
-		//        Url = resolver.GetFullUrl(nameof(SampleApiConfig.Login)),
-		//        Verb = HttpVerb.POST,
-		//        BodyType = ApiBodyType.FormUrlEncoded
-		//    };
+        #region Public Methods
 
-		//    request.AddFormField("LoginUserId", userId);
-		//    request.AddFormField("LoginPIN", pin);
-		//    //request.AddFormField("LoginUserName", email);
-
-		//    return request;
-
-
-		//    // ------------------------------------------------
-		//    // OPTION 2 : JSON API (Example)
-		//    // ------------------------------------------------
-		//    /*
-		//    var body = new
-		//    {
-		//        LoginUserId = userId,
-		//        LoginPIN = pin
-		//    };
-
-		//    return new ApiRequestParams
-		//    {
-		//        Url = resolver.GetFullUrl("Login"),
-		//        Verb = HttpVerb.POST,
-		//        BodyType = ApiBodyType.Json,
-		//        JsonContent = JsonUtilityService.Serialize(body)
-		//    };
-		//    */
-
-
-		//    // ------------------------------------------------
-		//    // OPTION 3 : Multipart Upload Example
-		//    // ------------------------------------------------
-		//    /*
-		//    byte[] fileData = System.IO.File.ReadAllBytes("path/to/file");
-
-		//    return new ApiRequestParams
-		//    {
-		//        Url = resolver.GetFullUrl("Upload"),
-		//        Verb = HttpVerb.POST,
-		//        BodyType = ApiBodyType.Multipart,
-		//        MultipartBody = fileData
-		//    };
-		//    */
-		//}
-
-		protected override ApiRequestParams BuildRequestParams()
-		{
-			var request = new ApiRequestParams
-			{
-				Url = resolver.GetFullUrl(nameof(SampleApiConfig.Login)),
-				Verb = HttpVerb.POST,
-				BodyType = ApiBodyType.FormUrlEncoded
-			};
-
-			// Required fields
-
-			request.AddHeader("access_token","8b29e155cd9da82e5188a0e310eca28c");
-
-			request.AddFormField(
-				"LoginUserId",
-				userId
-			);
-
-			request.AddFormField(
-				"LoginPIN",
-				pin
-			);
-
-			// Optional
-
-			if (!string.IsNullOrEmpty(email))
-			{
-				request.AddFormField(
-					"LoginUserName",
-					email
-				);
-			}
-			Debug.Log(resolver.GetFullUrl(nameof(SampleApiConfig.Login)));
-			Debug.Log(userId);
-			Debug.Log(pin);
-			return request;
-		}
-
-		protected override void OnSuccess(string json)
+        /// <summary>
+        /// Executes sample login request.
+        /// </summary>
+        /// <param name="email">
+        /// User email address.
+        /// </param>
+        /// <param name="password">
+        /// User password.
+        /// </param>
+        /// <returns>
+        /// Typed login API response.
+        /// </returns>
+        public async Task<ApiResponse<LoginResponse>>
+            LoginAsync(
+                string email,
+                string password)
         {
-            Debug.Log("Login Success Response: " + json);
+            // ------------------------------------------------
+            // Build Request Body
+            // ------------------------------------------------
+
+            LoginRequest requestBody =
+                new LoginRequest
+                {
+                    Email = email,
+                    Password = password
+                };
+
+            // ------------------------------------------------
+            // Serialize JSON
+            // ------------------------------------------------
+
+            string json =
+                JsonUtilityService.Serialize(
+                    requestBody);
+
+            // ------------------------------------------------
+            // Create Request
+            // ------------------------------------------------
+
+            ApiResponse<LoginResponse> response =
+                await ApiRequest
+                    .Create(
+                        "https://reqres.in/api/login",
+                        apiManager)
+                    .Post()
+                    .WithHeader(
+                        "Accept",
+                        "application/json")
+                    .WithJson(json)
+
+                    // Optional Request Overrides
+                    //.WithTimeout(10)
+                    //.WithRetry(5, 1000)
+
+                    .SendAsync<LoginResponse>();
+
+            return response;
         }
 
-        protected override void OnUnauthorized(string json)
-        {
-            Debug.LogError("Unauthorized: " + json);
-        }
+        #endregion
+    }
 
-        protected override void OnServerError(string error)
-        {
-            Debug.LogError("Server Error: " + error);
-        }
+    /// <summary>
+    /// Sample login request body.
+    /// </summary>
+    public class LoginRequest
+    {
+        /// <summary>
+        /// User email address.
+        /// </summary>
+        public string Email { get; set; }
+
+        /// <summary>
+        /// User password.
+        /// </summary>
+        public string Password { get; set; }
+    }
+
+    /// <summary>
+    /// Sample login response model.
+    /// </summary>
+    public class LoginResponse
+    {
+        /// <summary>
+        /// Authentication token.
+        /// </summary>
+        public string Token { get; set; }
     }
 }

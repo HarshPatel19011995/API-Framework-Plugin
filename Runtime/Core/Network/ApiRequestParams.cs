@@ -4,71 +4,201 @@
  *  File        : ApiRequestParams.cs
  *  Author      : Harsh Patel
  *  Company     : MayaMystic
+ *  Version     : 1.4.0
+ * 
+ *  Description :
+ *  Centralized API request parameter container.
+ * 
+ *  Stores:
+ *  - HTTP request configuration
+ *  - Authentication data
+ *  - Headers
+ *  - Request body content
+ *  - Retry configuration
+ *  - Timeout settings
+ *  - Cancellation tokens
+ * 
+ *  Features :
+ *  - Request configuration abstraction
+ *  - Retry override support
+ *  - Timeout override support
+ *  - Multipart/form/json body handling
+ *  - Header management
+ *  - Cancellation token support
+ *  - Doxygen documentation support
+ * 
+ *  Copyright © 2026 MayaMystic. All Rights Reserved.
  * 
  **************************************************************************/
 
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 
 namespace MayaMystic.ApiFramework.Core.Network
 {
+    /// <summary>
+    /// Stores API request configuration parameters.
+    /// </summary>
+    /// <remarks>
+    /// Acts as the transport container between:
+    /// 
+    /// - ApiRequest
+    /// - Middleware pipeline
+    /// - ApiManager
+    /// 
+    /// Stores request metadata and runtime configuration.
+    /// </remarks>
     public class ApiRequestParams
     {
-        // ------------------------------------------------
-        // Request
-        // ------------------------------------------------
+        #region Request Properties
 
+        /// <summary>
+        /// Gets or sets target request URL.
+        /// </summary>
         public string Url { get; set; }
 
-        public HttpVerb Verb { get; set; } = HttpVerb.GET;
+        /// <summary>
+        /// Gets or sets HTTP request verb.
+        /// </summary>
+        public HttpVerb Verb { get; set; } =
+            HttpVerb.GET;
 
-        public ApiBodyType BodyType { get; set; } = ApiBodyType.None;
+        /// <summary>
+        /// Gets or sets request body type.
+        /// </summary>
+        public ApiBodyType BodyType { get; set; } =
+            ApiBodyType.None;
 
-        // ------------------------------------------------
-        // Auth
-        // ------------------------------------------------
+        #endregion
 
+        #region Authentication
+
+        /// <summary>
+        /// Gets or sets bearer authentication token.
+        /// </summary>
         public string AuthToken { get; set; }
 
-        // ------------------------------------------------
-        // Body
-        // ------------------------------------------------
+        #endregion
 
+        #region Body Content
+
+        /// <summary>
+        /// Gets or sets JSON request content.
+        /// </summary>
         public string JsonContent { get; set; }
 
+        /// <summary>
+        /// Gets form field collection.
+        /// </summary>
         public Dictionary<string, string> FormFields { get; }
             = new();
 
+        /// <summary>
+        /// Gets or sets multipart binary body.
+        /// </summary>
         public byte[] MultipartBody { get; set; }
 
+        /// <summary>
+        /// Gets or sets multipart boundary identifier.
+        /// </summary>
         public string MultipartBoundary { get; set; }
 
-        // ------------------------------------------------
-        // Headers
-        // ------------------------------------------------
+        #endregion
 
+        #region Headers
+
+        /// <summary>
+        /// Gets additional request headers.
+        /// </summary>
         public Dictionary<string, string> AdditionalHeaders { get; }
             = new();
 
-        // ------------------------------------------------
-        // Retry / Timeout
-        // ------------------------------------------------
+        #endregion
 
-        public int TimeoutSeconds { get; set; } = 10;
+        #region Retry & Timeout
 
-        public int MaxRetries { get; set; } = 3;
+        /// <summary>
+        /// Gets or sets request timeout duration in seconds.
+        /// </summary>
+        /// <remarks>
+        /// Use:
+        /// 
+        /// -1 = Use framework default timeout
+        ///  0 = No timeout
+        /// >0 = Explicit timeout value
+        /// </remarks>
+        public int TimeoutSeconds { get; set; } = -1;
 
-        public int RetryDelayMilliseconds { get; set; } = 500;
+        /// <summary>
+        /// Gets or sets maximum retry attempts override.
+        /// </summary>
+        /// <remarks>
+        /// Use:
+        /// 
+        /// -1 = Use framework default
+        ///  0 = Disable retries
+        /// >0 = Explicit retry count
+        /// </remarks>
+        public int MaxRetries { get; set; } = -1;
 
+        /// <summary>
+        /// Gets or sets retry delay override in milliseconds.
+        /// </summary>
+        /// <remarks>
+        /// Use:
+        /// 
+        /// -1 = Use framework default delay
+        /// >=0 = Explicit retry delay
+        /// </remarks>
+        public int RetryDelayMilliseconds { get; set; } = -1;
+
+        /// <summary>
+        /// Internal retry attempt tracker.
+        /// </summary>
         internal int CurrentRetryAttempt = 0;
 
-        // ------------------------------------------------
-        // Constructors
-        // ------------------------------------------------
+        #endregion
 
-        public ApiRequestParams() { }
+        #region Cancellation
 
+        /// <summary>
+        /// Gets or sets external cancellation token.
+        /// </summary>
+        /// <remarks>
+        /// Allows external systems to cancel active requests.
+        /// 
+        /// Useful for:
+        /// - Scene unload
+        /// - UI destruction
+        /// - Logout cleanup
+        /// - Application shutdown
+        /// </remarks>
+        public CancellationToken CancellationToken { get; set; }
+            = CancellationToken.None;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the
+        /// <see cref="ApiRequestParams"/> class.
+        /// </summary>
+        public ApiRequestParams()
+        {
+        }
+
+        /// <summary>
+        /// Initializes request parameters with URL and HTTP verb.
+        /// </summary>
+        /// <param name="url">
+        /// Target request URL.
+        /// </param>
+        /// <param name="verb">
+        /// HTTP request verb.
+        /// </param>
         public ApiRequestParams(
             string url,
             HttpVerb verb = HttpVerb.GET)
@@ -77,80 +207,122 @@ namespace MayaMystic.ApiFramework.Core.Network
             Verb = verb;
         }
 
-        // ------------------------------------------------
-        // Helper Methods
-        // ------------------------------------------------
+        #endregion
 
-        public void AddHeader(string key, string value)
+        #region Helper Methods
+
+        /// <summary>
+        /// Adds custom request header.
+        /// </summary>
+        /// <param name="key">
+        /// Header key.
+        /// </param>
+        /// <param name="value">
+        /// Header value.
+        /// </param>
+        public void AddHeader(
+            string key,
+            string value)
         {
             AdditionalHeaders[key] = value;
         }
 
-        public void AddFormField(string key, string value)
+        /// <summary>
+        /// Adds form field entry.
+        /// </summary>
+        /// <param name="key">
+        /// Form field key.
+        /// </param>
+        /// <param name="value">
+        /// Form field value.
+        /// </param>
+        public void AddFormField(
+            string key,
+            string value)
         {
             FormFields[key] = value;
         }
 
+        /// <summary>
+        /// Sets JSON request body.
+        /// </summary>
+        /// <param name="json">
+        /// Serialized JSON string.
+        /// </param>
         public void SetJsonBody(string json)
         {
             BodyType = ApiBodyType.Json;
             JsonContent = json;
         }
 
-        // ------------------------------------------------
-        // Build Request
-        // ------------------------------------------------
+        #endregion
 
+        #region Request Builder
+
+        /// <summary>
+        /// Builds HTTP request message from current parameters.
+        /// </summary>
+        /// <returns>
+        /// Configured HTTP request message.
+        /// </returns>
         public HttpRequestMessage BuildHttpRequestMessage()
         {
-            var request = new HttpRequestMessage(
-                new HttpMethod(Verb.ToString()),
-                Url
-            );
+            HttpRequestMessage request =
+                new HttpRequestMessage(
+                    new HttpMethod(Verb.ToString()),
+                    Url);
 
+            // ------------------------------------------------
             // Authorization
+            // ------------------------------------------------
 
             if (!string.IsNullOrEmpty(AuthToken))
             {
                 request.Headers.TryAddWithoutValidation(
                     "Authorization",
-                    $"Bearer {AuthToken}"
-                );
+                    $"Bearer {AuthToken}");
             }
 
+            // ------------------------------------------------
             // Additional Headers
+            // ------------------------------------------------
 
-            foreach (var header in AdditionalHeaders)
+            foreach (KeyValuePair<string, string> header
+                     in AdditionalHeaders)
             {
                 request.Headers.TryAddWithoutValidation(
                     header.Key,
-                    header.Value
-                );
+                    header.Value);
             }
 
-            // GET usually no body
+            // ------------------------------------------------
+            // GET Usually Has No Body
+            // ------------------------------------------------
 
             if (Verb == HttpVerb.GET)
                 return request;
 
+            // ------------------------------------------------
             // Body Handling
+            // ------------------------------------------------
 
             switch (BodyType)
             {
                 case ApiBodyType.Json:
 
-                    request.Content = new StringContent(
-                        JsonContent ?? "",
-                        Encoding.UTF8,
-                        "application/json"
-                    );
+                    request.Content =
+                        new StringContent(
+                            JsonContent ?? string.Empty,
+                            Encoding.UTF8,
+                            "application/json");
 
                     break;
 
                 case ApiBodyType.FormUrlEncoded:
 
                     request.Content =
-                        new FormUrlEncodedContent(FormFields);
+                        new FormUrlEncodedContent(
+                            FormFields);
 
                     break;
 
@@ -159,20 +331,20 @@ namespace MayaMystic.ApiFramework.Core.Network
                     MultipartBoundary ??=
                         "----MayaMysticBoundary";
 
-                    var multipartContent =
+                    MultipartFormDataContent multipartContent =
                         new MultipartFormDataContent(
                             MultipartBoundary);
 
                     if (MultipartBody != null)
                     {
-                        var fileContent =
-                            new ByteArrayContent(MultipartBody);
+                        ByteArrayContent fileContent =
+                            new ByteArrayContent(
+                                MultipartBody);
 
                         multipartContent.Add(
                             fileContent,
                             "file",
-                            "upload.bin"
-                        );
+                            "upload.bin");
                     }
 
                     request.Content = multipartContent;
@@ -182,5 +354,7 @@ namespace MayaMystic.ApiFramework.Core.Network
 
             return request;
         }
+
+        #endregion
     }
 }
